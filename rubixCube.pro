@@ -13,12 +13,16 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    glwidget.cpp
+    glwidget.cpp \
+    cube.cpp
 
-HEADERS  += glwidget.h
+HEADERS  += glwidget.h \
+    cube.h
 
 RESOURCES += resources.qrc
 
 OTHER_FILES += \
     vertexShader.vsh \
-    fragmentShader.fsh
+    fragmentShader.fsh \
+    pickingFragShader.frag \
+    pickingVertexShader.vsh

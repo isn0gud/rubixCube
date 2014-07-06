@@ -1,13 +1,18 @@
 #include "glwidget.h"
 #include <QMouseEvent>
 #include <QWheelEvent>
+#include "cube.h"
+#include <QDebug>
 
 GLWidget::GLWidget(QWidget* parent)
     : QGLWidget(QGLFormat(), parent)
 {
     alpha = 25;
     beta = -25;
-    distance = 2.5;
+    distance = 8;
+    for (int i = 1; i <= 27; ++i) {
+        cubes << new Cube(i);
+    }
 }
 
 GLWidget::~GLWidget()
@@ -32,51 +37,148 @@ void GLWidget::initializeGL()
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
     shaderProgram.link();
 
+    pickingShaderProgram.addShaderFromSourceCode(QGLShader::Vertex, ":/shader/vertexShader.vsh");
+    pickingShaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
+    pickingShaderProgram.link();
+
     // cube vertices
-    vertices << QVector3D(-0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) // Front
-             << QVector3D(0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5)
-             << QVector3D(0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) // Back
-             << QVector3D(-0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, -0.5, -0.5)
-             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) // Left
-             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5)
-             << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) // Right
-             << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, -0.5, 0.5)
-             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, -0.5) // Top
-             << QVector3D(0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, 0.5)
-             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, 0.5) // Bottom
-             << QVector3D(0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, -0.5);
+    //    vertices << QVector3D(-0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) // Front
+    //             << QVector3D(0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5)
+    //             << QVector3D(0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) // Back
+    //             << QVector3D(-0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, -0.5, -0.5)
+    //             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) // Left
+    //             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5)
+    //             << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) // Right
+    //             << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, -0.5, 0.5)
+    //             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, -0.5) // Top
+    //             << QVector3D(0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, 0.5)
+    //             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, 0.5) // Bottom
+    //             << QVector3D(0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, -0.5);
+
+    //    colors << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) // Front
+    //           << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) << QVector3D(0, 0, 0)
+    //           << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) // Back
+    //           << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1)
+    //           << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) // Left
+    //           << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0)
+    //           << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) // Right
+    //           << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0)
+    //           << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) // Top
+    //           << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5)
+    //           << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) // Bottom
+    //           << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1);
+
+    //    numCubeVertices = 36;
+
+    //    cubeBuffer.create();
+    //    cubeBuffer.bind();
+    //    cubeBuffer.allocate(numCubeVertices * (3 + 3) * sizeof(GLfloat));
+
+    //    int offset = 0;
+    //    cubeBuffer.write(offset, vertices.constData(), numCubeVertices * 3 * sizeof(GLfloat));
+    //    offset += numCubeVertices * 3 * sizeof(GLfloat);
+    //    cubeBuffer.write(offset, cubeNormals.constData(), numCubeVertices * 3 * sizeof(GLfloat));
+    //    offset += numCubeVertices * 3 * sizeof(GLfloat);
+    //    cubeBuffer.write(offset, cubeTextureCoordinates.constData(), numCubeVertices * 2 * sizeof(GLfloat));
+}
+void GLWidget::drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
+{
+
+    if (pick) {
+        pickingShaderProgram.setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
+        pickingShaderProgram.setAttributeArray("vertex", cube.getVertices().constData());
+        pickingShaderProgram.enableAttributeArray("vertex");
+
+        pickingShaderProgram.setAttributeArray("color", cube.getColorVectorById().constData());
+
+        pickingShaderProgram.enableAttributeArray("color");
+
+        glDrawArrays(GL_TRIANGLES, 0, cube.getVertices().size());
+
+        pickingShaderProgram.disableAttributeArray("vertex");
+
+        pickingShaderProgram.disableAttributeArray("color");
+    } else {
+        shaderProgram.setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
+        shaderProgram.setAttributeArray("vertex", cube.getVertices().constData());
+        shaderProgram.enableAttributeArray("vertex");
+        shaderProgram.setAttributeArray("color", cube.getColors().constData());
+
+        shaderProgram.enableAttributeArray("color");
+
+        glDrawArrays(GL_TRIANGLES, 0, cube.getVertices().size());
+
+        shaderProgram.disableAttributeArray("vertex");
+
+        shaderProgram.disableAttributeArray("color");
+    }
+}
+
+void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
+{
+    for (int x = 0; x < 3; ++x) {
+        for (int y = 0; y < 3; ++y) {
+            for (int z = 0; z < 3; ++z) {
+                mMatrix.setToIdentity();
+                mMatrix.translate(x, y, z);
+                if (y == 2) {
+                    mMatrix.rotate(90, 0, 1, 0);
+                }
+                drawSingleCube(*cubes.at(x + y + z), mMatrix, vMatrix, pMatrix);
+            }
+        }
+    }
 }
 
 void GLWidget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (pick) {
+        picking();
+    } else {
 
-    QMatrix4x4 mMatrix;
-    QMatrix4x4 vMatrix;
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    QMatrix4x4 cameraTransformation;
-    cameraTransformation.rotate(alpha, 0, 1, 0);
-    cameraTransformation.rotate(beta, 1, 0, 0);
+        mMatrix = QMatrix4x4();
+        vMatrix = QMatrix4x4();
 
-    QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
-    QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
+        QMatrix4x4 cameraTransformation;
+        cameraTransformation.rotate(alpha, 0, 1, 0);
+        cameraTransformation.rotate(beta, 1, 0, 0);
 
-    vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
+        QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
+        QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
 
-    shaderProgram.bind();
+        vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
 
-    shaderProgram.setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
+        if (pick) {
+            pickingShaderProgram.bind();
+        } else {
+            shaderProgram.bind();
+        }
 
-    shaderProgram.setUniformValue("color", QColor(Qt::blue));
+        // shaderProgram.setUniformValue("color", QColor(Qt::blue));
+        drawCube(mMatrix, vMatrix, pMatrix);
 
-    shaderProgram.setAttributeArray("vertex", vertices.constData());
-    shaderProgram.enableAttributeArray("vertex");
+        mMatrix.setToIdentity();
 
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        if (pick) {
+            glFlush();
+            glFinish();
 
-    shaderProgram.disableAttributeArray("vertex");
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            GLint viewport[4];
+            glGetIntegerv(GL_VIEWPORT, viewport);
 
-    shaderProgram.release();
+            unsigned char data[4];
+            glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+            qDebug() << data[0] << data[1] << data[2] << data[3] << endl;
+
+            pickingShaderProgram.release();
+        } else {
+            shaderProgram.release();
+        }
+    }
 }
 
 void GLWidget::resizeGL(int width, int height)
@@ -95,6 +197,7 @@ void GLWidget::resizeGL(int width, int height)
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
 {
+
     lastMousePosition = event->pos();
 
     event->accept();
@@ -145,4 +248,55 @@ void GLWidget::wheelEvent(QWheelEvent* event)
     }
 
     event->accept();
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+
+    //    //  QMatrix4x4 viewport
+    //    GLint* viewport;
+    //    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    //    GLdouble winX, winY, winZ;
+    //    winX = event->x();
+    //    winY = event->y();
+    //    glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ);
+    //    GLdouble posX, posY, posZ;
+    //    gluUnProject(winX, winY, 1.0, (double*)mMatrix.constData(), (double*)pMatrix.constData(), viewport, &posX, &posY, &posZ);
+
+    // qDebug() << posX << endl << posY << endl << posZ << endl;
+
+    picking();
+    event->accept();
+}
+
+void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    event->accept();
+}
+
+void GLWidget::picking()
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mMatrix = QMatrix4x4();
+    vMatrix = QMatrix4x4();
+
+    QMatrix4x4 cameraTransformation;
+    cameraTransformation.rotate(alpha, 0, 1, 0);
+    cameraTransformation.rotate(beta, 1, 0, 0);
+
+    QVector3D cameraPosition = cameraTransformation * QVector3D(0, 0, distance);
+    QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
+
+    vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
+
+    pickingShaderProgram.bind();
+
+    drawCube(mMatrix, vMatrix, pMatrix);
+
+    mMatrix.setToIdentity();
+
+    shaderProgram.release();
 }

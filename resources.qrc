@@ -2,5 +2,7 @@
     <qresource prefix="/shader">
         <file>vertexShader.vsh</file>
         <file>fragmentShader.fsh</file>
+        <file>pickingFragShader.frag</file>
+        <file>pickingVertexShader.vsh</file>
     </qresource>
 </RCC>
