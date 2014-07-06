@@ -37,7 +37,7 @@ void GLWidget::initializeGL()
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
     shaderProgram.link();
 
-    pickingShaderProgram.addShaderFromSourceCode(QGLShader::Vertex, ":/shader/vertexShader.vsh");
+    pickingShaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/shader/pickingVertexShader.vsh");
     pickingShaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
     pickingShaderProgram.link();
 
@@ -149,12 +149,13 @@ void GLWidget::paintGL()
         QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
 
         vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
-
+    }
         if (pick) {
             pickingShaderProgram.bind();
         } else {
             shaderProgram.bind();
         }
+
 
         // shaderProgram.setUniformValue("color", QColor(Qt::blue));
         drawCube(mMatrix, vMatrix, pMatrix);
@@ -178,7 +179,6 @@ void GLWidget::paintGL()
         } else {
             shaderProgram.release();
         }
-    }
 }
 
 void GLWidget::resizeGL(int width, int height)
@@ -265,8 +265,9 @@ void GLWidget::mouseReleaseEvent(QMouseEvent* event)
     //    gluUnProject(winX, winY, 1.0, (double*)mMatrix.constData(), (double*)pMatrix.constData(), viewport, &posX, &posY, &posZ);
 
     // qDebug() << posX << endl << posY << endl << posZ << endl;
-
-    picking();
+    pick = true;
+    paintGL();
+    pick = false;
     event->accept();
 }
 
@@ -298,5 +299,5 @@ void GLWidget::picking()
 
     mMatrix.setToIdentity();
 
-    shaderProgram.release();
+    pickingShaderProgram.release();
 }
