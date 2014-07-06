@@ -16,6 +16,7 @@ private:
     QMatrix4x4 vMatrix;
     QMatrix4x4 mMatrix;
     QVector<Cube*> cubes;
+    int selectedCube = -1;
 
     double alpha;
     double beta;
@@ -37,13 +38,14 @@ protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
+    void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent* event);
 
 private:
+    void rotateVertical();
+    void rotateHorizontal();
     void drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
-    void picking();
 };
 
 #endif // GLWIDGET_H
