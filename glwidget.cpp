@@ -5,6 +5,8 @@
 #include "cube.h"
 #include <QDebug>
 
+// https://github.com/tu-pencil/Rubik/blob/master/RubiksCube.cpp
+
 GLWidget::GLWidget(QWidget* parent)
     : QGLWidget(QGLFormat(), parent)
 {
@@ -108,7 +110,7 @@ void GLWidget::paintGL()
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
         qDebug() << data[0] << endl;
-        if (data[0] >= 1 && data[0] <= 27) {
+        if (data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 cubes.at(selectedCube)->setToStdColor();
                 selectedCube = -1;
@@ -193,23 +195,23 @@ void GLWidget::wheelEvent(QWheelEvent* event)
     event->accept();
 }
 
-void GLWidget::keyPressEvent(QKeyEvent *event)
+void GLWidget::keyPressEvent(QKeyEvent* event)
 {
-  if(event->key() == Qt::Key_V){
-      rotateVertical();
+    if (event->key() == Qt::Key_V) {
+        rotateVertical();
     }
-  if(event->key() == Qt::Key_H){
-      rotateHorizontal();
+    if (event->key() == Qt::Key_H) {
+        rotateHorizontal();
     }
-  event->accept();
+    event->accept();
 }
 
-void GLWidget::rotateVertical(){
-
+void GLWidget::rotateVertical()
+{
 }
 
-void GLWidget::rotateHorizontal(){
-
+void GLWidget::rotateHorizontal()
+{
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
