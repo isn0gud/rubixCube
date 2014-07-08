@@ -15,9 +15,9 @@ GLWidget::GLWidget(QWidget* parent)
     distance = 8;
 
     int id = 0;
-    for (int x = 0; x < 3; ++x) {
-        for (int y = 0; y < 3; ++y) {
-            for (int z = 0; z < 3; ++z) {
+    for (int x = -1.5; x < 1.5; ++x) {
+        for (int y = -1.5; y < 1.5; ++y) {
+            for (int z = -1.5; z < 1.5; ++z) {
                 cubes << new Cube(id, x, y, z);
                 id++;
             }
@@ -70,6 +70,9 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
     for (int i = 0; i < cubes.size(); ++i) {
         mMatrix.setToIdentity();
         mMatrix.translate(cubes.at(i)->getPosition());
+        mMatrix.rotate(cubes.at(i)->getXAngle(),QVector3D(1,0,0));
+        mMatrix.rotate(cubes.at(i)->getYAngle(),QVector3D(0,1,0));
+        mMatrix.rotate(cubes.at(i)->getZAngle(),QVector3D(0,0,1));
         drawSingleCube(*cubes.at(i), mMatrix, vMatrix, pMatrix);
     }
 }
