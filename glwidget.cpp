@@ -102,6 +102,7 @@ void GLWidget::paintGL()
     drawCube(mMatrix, vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
+    drawCoords(mMatrix,vMatrix,pMatrix);
 
     if (pick) {
         glFlush();
@@ -230,4 +231,20 @@ void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
     pick = false;
     updateGL();
     event->accept();
+}
+void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
+{
+    Cube cube = Cube(1,0,0,0);
+    mMatrix.setToIdentity();
+    mMatrix.scale(10,0.05,0.05);
+    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
+
+    mMatrix.setToIdentity();
+    mMatrix.scale(0.05,10,0.05);
+    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
+
+    mMatrix.setToIdentity();
+    mMatrix.scale(0.05,0.05,10);
+    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
+
 }

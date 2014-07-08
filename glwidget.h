@@ -12,12 +12,12 @@ private:
     RubixCube rCube;
     QMatrix4x4 pMatrix;
     QGLShaderProgram shaderProgram;
-//    QGLShaderProgram pickingShaderProgram;
-//    QVector<QVector3D> vertices;
-//    QVector<QVector3D> colors;
+    //    QGLShaderProgram pickingShaderProgram;
+    //    QVector<QVector3D> vertices;
+    //    QVector<QVector3D> colors;
     QMatrix4x4 vMatrix;
     QMatrix4x4 mMatrix;
-//    QVector<Cube*> cubes;
+    //    QVector<Cube*> cubes;
     int selectedCube = -1;
 
     double alpha;
@@ -40,7 +40,7 @@ protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void wheelEvent(QWheelEvent* event);
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent* event);
     void mouseDoubleClickEvent(QMouseEvent* event);
 
 private:
@@ -48,6 +48,7 @@ private:
     void rotateHorizontal();
     void drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
+    void drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
 };
 
 #endif // GLWIDGET_H
