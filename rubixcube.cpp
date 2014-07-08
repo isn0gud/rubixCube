@@ -90,17 +90,18 @@ void RubixCube::rotateX(int block, int degree)
 
 void RubixCube::rotateY(int block, int degree)
 {
-    QVector<Side*> _sides = getSides(cubes[block]);
+    cubes[block]->rotateY(degree);
+//    QVector<Side*> _sides = getSides(cubes[block]);
 
-    if (_sides.contains(sides[2])) {
-        foreach (Cube* cube, sides[2]->getCubes()) {
-            cube->rotateY(degree);
-        }
-    }else if (_sides.contains(sides[4])) {
-        foreach (Cube* cube, sides[4]->getCubes()) {
-            cube->rotateY(degree);
-        }
-    }
+//    if (_sides.contains(sides[2])) {
+//        foreach (Cube* cube, sides[2]->getCubes()) {
+//            cube->rotateY(degree);
+//        }
+//    }else if (_sides.contains(sides[4])) {
+//        foreach (Cube* cube, sides[4]->getCubes()) {
+//            cube->rotateY(degree);
+//        }
+//    }
 }
 
 void RubixCube::rotateZ(int block, int degree)
