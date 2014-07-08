@@ -24,15 +24,13 @@ private:
     QVector3D position;
 
 public:
-    enum axis { X, Y, Z};
-    Cube(int _id = 1, int x = 0, int y = 0, int z = 0);
+
+    Cube(int _id = 1, float x = 0, float y = 0, float z = 0);
     QVector<QVector3D> getVertices() const;
     QVector<QVector3D> getColorVectorById() const;
     QVector<QVector3D> getColors() const;
     void setToStdColor();
     void setColorHighlight();
-
-    int getId() const;
 
     QVector3D getPosition() const;
 
@@ -41,25 +39,13 @@ public:
     int getYAngle() const;
     int getZAngle() const;
 
+    void rotateX(int angle);
+    void rotateY(int angle);
+    void rotateZ(int angle);
 
 
-    QVector<QVector3D> getFrontColors() const;
-    void setFrontColors(const QVector<QVector3D> &value);
+    int getId() const;
 
-    QVector<QVector3D> getBackColors() const;
-    void setBackColors(const QVector<QVector3D> &value);
-
-    QVector<QVector3D> getLeftColors() const;
-    void setLeftColors(const QVector<QVector3D> &value);
-
-    QVector<QVector3D> getRightColors() const;
-    void setRightColors(const QVector<QVector3D> &value);
-
-    QVector<QVector3D> getTopColors() const;
-    void setTopColors(const QVector<QVector3D> &value);
-
-    QVector<QVector3D> getBottomColors() const;
-    void setBottomColors(const QVector<QVector3D> &value);
 
 private:
 };

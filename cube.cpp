@@ -16,71 +16,76 @@ int Cube::getYAngle() const
 
 int Cube::getZAngle() const
 {
-  return yAngle;
+    return yAngle;
 }
 
 
+//QVector<QVector3D> Cube::getFrontColors() const
+//{
+//    return frontColors;
+//}
 
-QVector<QVector3D> Cube::getFrontColors() const
+//void Cube::setFrontColors(const QVector<QVector3D> &value)
+//{
+//    frontColors = value;
+//}
+
+//QVector<QVector3D> Cube::getBackColors() const
+//{
+//    return backColors;
+//}
+
+//void Cube::setBackColors(const QVector<QVector3D> &value)
+//{
+//    backColors = value;
+//}
+
+//QVector<QVector3D> Cube::getLeftColors() const
+//{
+//    return leftColors;
+//}
+
+//void Cube::setLeftColors(const QVector<QVector3D> &value)
+//{
+//    leftColors = value;
+//}
+
+//QVector<QVector3D> Cube::getRightColors() const
+//{
+//    return rightColors;
+//}
+
+//void Cube::setRightColors(const QVector<QVector3D> &value)
+//{
+//    rightColors = value;
+//}
+
+//QVector<QVector3D> Cube::getTopColors() const
+//{
+//    return topColors;
+//}
+
+//void Cube::setTopColors(const QVector<QVector3D> &value)
+//{
+//    topColors = value;
+//}
+
+//QVector<QVector3D> Cube::getBottomColors() const
+//{
+//    return bottomColors;
+//}
+
+//void Cube::setBottomColors(const QVector<QVector3D> &value)
+//{
+//    bottomColors = value;
+//}
+
+int Cube::getId() const
 {
-    return frontColors;
+    return id;
 }
 
-void Cube::setFrontColors(const QVector<QVector3D> &value)
-{
-    frontColors = value;
-}
-
-QVector<QVector3D> Cube::getBackColors() const
-{
-    return backColors;
-}
-
-void Cube::setBackColors(const QVector<QVector3D> &value)
-{
-    backColors = value;
-}
-
-QVector<QVector3D> Cube::getLeftColors() const
-{
-    return leftColors;
-}
-
-void Cube::setLeftColors(const QVector<QVector3D> &value)
-{
-    leftColors = value;
-}
-
-QVector<QVector3D> Cube::getRightColors() const
-{
-    return rightColors;
-}
-
-void Cube::setRightColors(const QVector<QVector3D> &value)
-{
-    rightColors = value;
-}
-
-QVector<QVector3D> Cube::getTopColors() const
-{
-    return topColors;
-}
-
-void Cube::setTopColors(const QVector<QVector3D> &value)
-{
-    topColors = value;
-}
-
-QVector<QVector3D> Cube::getBottomColors() const
-{
-    return bottomColors;
-}
-
-void Cube::setBottomColors(const QVector<QVector3D> &value)
-{
-    bottomColors = value;
-}
-Cube::Cube(int _id, int x, int y, int z)
+Cube::Cube(int _id , float x, float y , float z)
     : id(_id)
     , position(x, y, z)
 {
@@ -109,7 +114,7 @@ Cube::Cube(int _id, int x, int y, int z)
          << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5);
          bottomColors<< QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) // Bottom
          << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1);
-
+setToStdColor();
     //    qDebug() << (id & 0x000000FF) / 255.0f << endl;
     for (int i = 0; i < 36; ++i) {
         colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
@@ -134,6 +139,7 @@ QVector<QVector3D> Cube::getColors() const
 
 void Cube::setToStdColor()
 {
+    colors.clear();
         colors << frontColors << backColors << leftColors << rightColors << topColors << bottomColors;
 }
 
@@ -153,27 +159,27 @@ QVector3D Cube::getPosition() const
     return position;
 }
 
-//void Cube::rotateX(int angle)
-//{
-//    xAngle += angle;
-//    while (xAngle >= 360) {
-//        xAngle -= 360;
-//    }
+void Cube::rotateX(int angle)
+{
+    xAngle += angle;
+    while (xAngle >= 360) {
+        xAngle -= 360;
+    }
 
-//}
+}
 
-//void Cube::rotateY(int angle)
-//{
-//    yAngle += angle;
-//    while (yAngle >= 360) {
-//        yAngle -= 360;
-//    }
-//}
+void Cube::rotateY(int angle)
+{
+    yAngle += angle;
+    while (yAngle >= 360) {
+        yAngle -= 360;
+    }
+}
 
-//void Cube::rotateZ(int angle)
-//{
-//    zAngle += angle;
-//    while (zAngle >= 360) {
-//        zAngle -= 360;
-//    }
-//}
+void Cube::rotateZ(int angle)
+{
+    zAngle += angle;
+    while (zAngle >= 360) {
+        zAngle -= 360;
+    }
+}

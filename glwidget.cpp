@@ -14,15 +14,15 @@ GLWidget::GLWidget(QWidget* parent)
     beta = -25;
     distance = 8;
 
-    int id = 0;
-    for (int x = -1.5; x < 1.5; ++x) {
-        for (int y = -1.5; y < 1.5; ++y) {
-            for (int z = -1.5; z < 1.5; ++z) {
-                cubes << new Cube(id, x, y, z);
-                id++;
-            }
-        }
-    }
+//    int id = 0;
+//    for (int x = -1.5; x < 1.5; ++x) {
+//        for (int y = -1.5; y < 1.5; ++y) {
+//            for (int z = -1.5; z < 1.5; ++z) {
+//                cubes << new Cube(id, x, y, z);
+//                id++;
+//            }
+//        }
+//    }
 }
 
 GLWidget::~GLWidget()
@@ -67,13 +67,15 @@ void GLWidget::drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix
 
 void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
 {
-    for (int i = 0; i < cubes.size(); ++i) {
+
+
+        foreach (Cube* cube, rCube.getCubes()) {
         mMatrix.setToIdentity();
-        mMatrix.translate(cubes.at(i)->getPosition());
-        mMatrix.rotate(cubes.at(i)->getXAngle(),QVector3D(1,0,0));
-        mMatrix.rotate(cubes.at(i)->getYAngle(),QVector3D(0,1,0));
-        mMatrix.rotate(cubes.at(i)->getZAngle(),QVector3D(0,0,1));
-        drawSingleCube(*cubes.at(i), mMatrix, vMatrix, pMatrix);
+        mMatrix.rotate(cube->getXAngle(),QVector3D(1,0,0));
+        mMatrix.rotate(cube->getYAngle(),QVector3D(0,1,0));
+        mMatrix.rotate(cube->getZAngle(),QVector3D(0,0,1));
+        mMatrix.translate(cube->getPosition());
+        drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
     }
 }
 
@@ -115,13 +117,13 @@ void GLWidget::paintGL()
         qDebug() << data[0] << endl;
         if (data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
-                cubes.at(selectedCube)->setToStdColor();
+                rCube.getCubes().at(selectedCube)->setToStdColor();
                 selectedCube = -1;
             } else {
                 if (selectedCube != -1) {
-                    cubes.at(selectedCube)->setToStdColor();
+                    rCube.getCubes().at(selectedCube)->setToStdColor();
                 }
-                cubes.at(data[0])->setColorHighlight();
+                rCube.getCubes().at(data[0])->setColorHighlight();
                 selectedCube = data[0];
             }
         }
@@ -211,10 +213,14 @@ void GLWidget::keyPressEvent(QKeyEvent* event)
 
 void GLWidget::rotateVertical()
 {
+    rCube.rotateX(selectedCube,45);
+    updateGL();
 }
 
 void GLWidget::rotateHorizontal()
 {
+    rCube.rotateY(selectedCube,45);
+    updateGL();
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)

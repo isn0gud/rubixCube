@@ -1,11 +1,113 @@
 #include "rubixcube.h"
+#include <QDebug>
+
+/**
+ * @brief RubixCube::RubixCube
+ *
+ *              5
+ *              |
+ *         _____V___
+ *        /        /|
+ *       /   2    / |
+ *      /________/3 |
+ *  0-> |       |  /
+ *      |   1   | /
+ *      |_______|/
+ *          /\
+ *           |
+ *          4
+ */
+
+
+QVector<Cube *> RubixCube::getCubes() const
+{
+    return cubes;
+}
+
+QVector<Side*> RubixCube::getSides(Cube* cube)
+{
+    QVector<Side*> _sides;
+    foreach (Side* side, sides) {
+        if (side->getCubes().contains(cube)) {
+            _sides.append(side);
+        }
+    }
+    return _sides;
+}
 
 RubixCube::RubixCube()
 {
-    for (int i = 0; i<3; i++)
-      for (int j = 0; j<3; j++)
-        for (int k = 0; k<3; k++)
-          rCube[i][j][k] = new Cube();
+    int id = 0;
+    QVector<QVector<Cube*> > vSides = QVector<QVector<Cube*> >(6,QVector<Cube*>(0));
+    for (int x = -1; x < 2; ++x) {
+        for (int y = -1; y < 2; ++y) {
+            for (int z = -1; z < 2; ++z) {
+                cubes << new Cube(id, x, y, z);
+                id++;
+                if (x == -1) {
+                    Cube* cube = cubes.back();
+                    vSides[0].append(cube);
+                }
+                if (y == -1) {
+                    vSides[4].append(cubes.back());
+                }
+                if (z == -1) {
+                    vSides[5].append(cubes.back());
+                }
+                if (x == 1) {
+                    vSides[3].append(cubes.back());
+                }
+                if (y == 1) {
+                    vSides[2].append(cubes.back());
+                }
+                if (z == 1) {
+                    vSides[1].append(cubes.back());
+                }
+
+            }
+        }
+    }
+    for (int i = 0; i < 6; ++i) {
+        sides.append(new Side(vSides[i]));
+    }
+
+}
+
+void RubixCube::rotateX(int block, int degree)
+{
+    QVector<Side*> _sides = getSides(cubes[block]);
+
+    if (_sides.contains(sides[3])) {
+        foreach (Cube* cube, sides[3]->getCubes()) {
+            cube->rotateX(degree);
+        }
+    }else if (_sides.contains(sides[0])) {
+        foreach (Cube* cube, sides[0]->getCubes()) {
+            cube->rotateX(degree);
+        }
+    }
+}
+
+void RubixCube::rotateY(int block, int degree)
+{
+    QVector<Side*> _sides = getSides(cubes[block]);
+
+    if (_sides.contains(sides[2])) {
+        foreach (Cube* cube, sides[2]->getCubes()) {
+            cube->rotateY(degree);
+        }
+    }else if (_sides.contains(sides[4])) {
+        foreach (Cube* cube, sides[4]->getCubes()) {
+            cube->rotateY(degree);
+        }
+    }
+}
+
+void RubixCube::rotateZ(int block, int degree)
+{
+    foreach (Cube* cube, sides[2]->getCubes()) {
+        cube->rotateZ(degree);
+    }
 }
 //void RubixCube::rotateX(int block, int degree){
 //  for (int i = 0;i<3;i++){

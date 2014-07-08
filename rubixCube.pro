@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
     glwidget.cpp \
     cube.cpp \
-    rubixcube.cpp
+    rubixcube.cpp \
+    side.cpp \
+    row.cpp
 
 HEADERS  += glwidget.h \
     cube.h \
-    rubixcube.h
+    rubixcube.h \
+    side.h \
+    row.h
 
 RESOURCES += resources.qrc
 
