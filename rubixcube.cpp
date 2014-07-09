@@ -171,7 +171,10 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 
         break;
     case LEFT:
-        sides[TOP]->setFront_row(sides[side]->getBack_row());
+
+        sides[TOP]->getFront_row()->setFront_cube(sides[side]->getBack_row()->getFront_cube());
+        sides[TOP]->getFront_row()->setMid_cube(sides[side]->getBack_row()->getMid_cube());
+        sides[TOP]->getFront_row()->setBack_cube(sides[side]->getBack_row()->getBack_cube());
 
         sides[FRONT]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getBack_cube());
         sides[FRONT]->getFront_row()->setMid_cube(sides[side]->getMid_row()->getBack_cube());
@@ -181,12 +184,16 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         sides[BACK]->getFront_row()->setMid_cube(sides[side]->getMid_row()->getFront_cube());
         sides[BACK]->getFront_row()->setBack_cube(sides[side]->getBack_row()->getFront_cube());
 
-        sides[DOWN]->setFront_row(sides[side]->getFront_row());
+        sides[DOWN]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[DOWN]->getFront_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
+        sides[DOWN]->getFront_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
 
         break;
     case RIGHT:
 
-        sides[TOP]->setBack_row(sides[side]->getBack_row());
+        sides[TOP]->getBack_row()->setFront_cube(sides[side]->getBack_row()->getFront_cube());
+        sides[TOP]->getBack_row()->setMid_cube(sides[side]->getBack_row()->getMid_cube());
+        sides[TOP]->getBack_row()->setBack_cube(sides[side]->getBack_row()->getBack_cube());
 
         sides[FRONT]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getBack_cube());
         sides[FRONT]->getBack_row()->setMid_cube(sides[side]->getMid_row()->getBack_cube());
@@ -196,12 +203,16 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         sides[BACK]->getBack_row()->setMid_cube(sides[side]->getMid_row()->getFront_cube());
         sides[BACK]->getBack_row()->setBack_cube(sides[side]->getBack_row()->getFront_cube());
 
-        sides[DOWN]->setBack_row(sides[side]->getFront_row());
+        sides[DOWN]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[DOWN]->getBack_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
+        sides[DOWN]->getBack_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
 
         break;
     case TOP:
 
-        sides[RIGHT]->setBack_row(sides[side]->getBack_row());
+        sides[RIGHT]->getBack_row()->setFront_cube(sides[side]->getBack_row()->getFront_cube());
+        sides[RIGHT]->getBack_row()->setMid_cube(sides[side]->getBack_row()->getMid_cube());
+        sides[RIGHT]->getBack_row()->setBack_cube(sides[side]->getBack_row()->getBack_cube());
 
         sides[FRONT]->getFront_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
         sides[FRONT]->getMid_row()->setBack_cube(sides[side]->getMid_row()->getBack_cube());
@@ -211,12 +222,16 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         sides[BACK]->getMid_row()->setFront_cube(sides[side]->getMid_row()->getBack_cube());
         sides[BACK]->getBack_row()->setFront_cube(sides[side]->getBack_row()->getBack_cube());
 
-        sides[LEFT]->setBack_row(sides[side]->getFront_row());
+        sides[LEFT]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[LEFT]->getBack_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
+        sides[LEFT]->getBack_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
 
         break;
     case DOWN:
 
-        sides[RIGHT]->setFront_row(sides[side]->getBack_row());
+        sides[RIGHT]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[RIGHT]->getBack_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
+        sides[RIGHT]->getBack_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
 
         sides[FRONT]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getBack_cube());
         sides[FRONT]->getMid_row()->setFront_cube(sides[side]->getMid_row()->getBack_cube());
@@ -226,7 +241,9 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         sides[BACK]->getMid_row()->setFront_cube(sides[side]->getMid_row()->getFront_cube());
         sides[BACK]->getBack_row()->setFront_cube(sides[side]->getBack_row()->getFront_cube());
 
-        sides[LEFT]->setFront_row(sides[side]->getFront_row());
+        sides[LEFT]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[LEFT]->getFront_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
+        sides[LEFT]->getFront_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
 
         break;
     }
