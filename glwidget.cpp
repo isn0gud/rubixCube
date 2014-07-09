@@ -76,6 +76,7 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
         mMatrix.rotate(cube->getZAngle(),QVector3D(0,0,1));
         mMatrix.translate(cube->getPosition());
         drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
+        //drawCoords(mMatrix,vMatrix,pMatrix);
     }
 }
 
@@ -101,7 +102,6 @@ void GLWidget::paintGL()
     // shaderProgram.setUniformValue("color", QColor(Qt::blue));
     drawCube(mMatrix, vMatrix, pMatrix);
 
-    mMatrix.setToIdentity();
     drawCoords(mMatrix,vMatrix,pMatrix);
 
     if (pick) {
@@ -209,19 +209,28 @@ void GLWidget::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_H) {
         rotateHorizontal();
     }
+    if (event->key() == Qt::Key_Z) {
+        rotateDepth();
+    }
     event->accept();
 }
 
 void GLWidget::rotateVertical()
 {
-    rCube.rotateX(selectedCube,45);
+    rCube.rotateX(selectedCube,90);
     updateGL();
 }
 
 void GLWidget::rotateHorizontal()
 {
-    rCube.rotateY(selectedCube,45);
+    rCube.rotateY(selectedCube,90);
     updateGL();
+}
+
+void GLWidget::rotateDepth()
+{
+  rCube.rotateZ(selectedCube,90);
+  updateGL();
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -236,15 +245,15 @@ void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMa
 {
     Cube cube = Cube(1,0,0,0);
     mMatrix.setToIdentity();
-    mMatrix.scale(10,0.05,0.05);
+    mMatrix.scale(10,0.02,0.02);
     drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
-    mMatrix.scale(0.05,10,0.05);
+    mMatrix.scale(0.02,10,0.02);
     drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
-    mMatrix.scale(0.05,0.05,10);
+    mMatrix.scale(0.02,0.02,10);
     drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
 
 }

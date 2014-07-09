@@ -20,21 +20,30 @@
  *           |
  *          4
  */
-class RubixCube
-{
+class RubixCube {
 private:
- QVector<Cube*> cubes;
- QVector<Side*> sides;
+    QVector<Cube*> cubes;
+    QVector<Side*> sides;
+
 public:
-  RubixCube();
-  void rotateX(int block, int degree);
-  void rotateY(int block, int degree);
-  void rotateZ(int block, int degree);
-  QVector<Cube *> getCubes() const;
+    enum SIDENAMES {
+        TOP = 2,
+        BACK = 5,
+        FRONT = 1,
+        LEFT = 0,
+        DOWN = 4,
+        RIGHT = 3
+    };
+    RubixCube();
+    void rotateX(int block, int degree);
+    void rotateY(int block, int degree);
+    void rotateZ(int block, int degree);
+    QVector<Cube*> getCubes() const;
 
 private:
-  QVector<Side*> getSides(Cube* cube);
-
+    QVector<Side*> getSides(Cube* cube);
+    void rotateSide(RubixCube::SIDENAMES side);
+    void rotateSingleSide(Side* side);
 };
 
 #endif // RUBIXCUBE_H

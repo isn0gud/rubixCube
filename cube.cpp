@@ -1,24 +1,20 @@
 #include "cube.h"
 #include <QDebug>
 
-
 int Cube::getXAngle() const
 {
-  return xAngle;
+    return xAngle;
 }
-
-
 
 int Cube::getYAngle() const
-{
-  return yAngle;
-}
-
-int Cube::getZAngle() const
 {
     return yAngle;
 }
 
+int Cube::getZAngle() const
+{
+    return zAngle;
+}
 
 //QVector<QVector3D> Cube::getFrontColors() const
 //{
@@ -85,7 +81,7 @@ int Cube::getId() const
     return id;
 }
 
-Cube::Cube(int _id , float x, float y , float z)
+Cube::Cube(int _id, float x, float y, float z)
     : id(_id)
     , position(x, y, z)
 {
@@ -102,19 +98,19 @@ Cube::Cube(int _id , float x, float y , float z)
              << QVector3D(-0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, 0.5) // Bottom
              << QVector3D(0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, -0.5);
 
-  frontColors << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) // Front
-         << QVector3D(0, 0, 0) << QVector3D(0, 0, 0) << QVector3D(0, 0, 0);
-        backColors << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) // Back
-         << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1);
-        leftColors << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) // Left
-         << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0);
-        rightColors << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) // Right
-         << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0);
-        topColors << QVector3D(0.5, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) // Top
-         << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5);
-         bottomColors<< QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) // Bottom
-         << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1);
-setToStdColor();
+    frontColors << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) // Front
+                << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3);
+    backColors << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) // Back
+               << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1);
+    leftColors << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) // Left
+               << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0);
+    rightColors << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) // Right
+                << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0);
+    topColors << QVector3D(0.5, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) // Top
+              << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5);
+    bottomColors << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) // Bottom
+                 << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1);
+    setToStdColor();
     //    qDebug() << (id & 0x000000FF) / 255.0f << endl;
     for (int i = 0; i < 36; ++i) {
         colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
@@ -140,9 +136,8 @@ QVector<QVector3D> Cube::getColors() const
 void Cube::setToStdColor()
 {
     colors.clear();
-        colors << frontColors << backColors << leftColors << rightColors << topColors << bottomColors;
+    colors << frontColors << backColors << leftColors << rightColors << topColors << bottomColors;
 }
-
 
 void Cube::setColorHighlight()
 {
@@ -162,24 +157,23 @@ QVector3D Cube::getPosition() const
 void Cube::rotateX(int angle)
 {
     xAngle += angle;
-    while (xAngle >= 360) {
-        xAngle -= 360;
+    if (xAngle >= 360) {
+        xAngle = 0;
     }
-
 }
 
 void Cube::rotateY(int angle)
 {
     yAngle += angle;
-    while (yAngle >= 360) {
-        yAngle -= 360;
+    if (yAngle >= 360) {
+        yAngle = 0;
     }
 }
 
 void Cube::rotateZ(int angle)
 {
     zAngle += angle;
-    while (zAngle >= 360) {
-        zAngle -= 360;
+    if (zAngle >= 360) {
+        zAngle = 0;
     }
 }

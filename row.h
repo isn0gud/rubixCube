@@ -18,6 +18,8 @@ public:
     void setMid_cube(Cube *value);
     Cube *getBack_cube() const;
     void setBack_cube(Cube *value);
+
+
 };
 
 #endif // ROW_H
