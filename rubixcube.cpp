@@ -76,17 +76,19 @@ void RubixCube::rotateX(int block, int degree)
     QVector<Side*> _sides = getSides(cubes[block]);
 
     if (_sides.contains(sides[RubixCube::RIGHT])) {
-        rotateSide(RubixCube::RIGHT);
+        degree *= -1;
         foreach(Cube * cube, sides[RubixCube::RIGHT]->getCubes())
         {
             cube->rotateX(degree);
         }
+        rotateSide(RubixCube::RIGHT);
+
     } else if (_sides.contains(sides[RubixCube::LEFT])) {
-        rotateSide(RubixCube::LEFT);
         foreach(Cube * cube, sides[RubixCube::LEFT]->getCubes())
         {
             cube->rotateX(degree);
         }
+        rotateSide(RubixCube::LEFT);
     }
 }
 
@@ -96,17 +98,29 @@ void RubixCube::rotateY(int block, int degree)
     QVector<Side*> _sides = getSides(cubes[block]);
 
     if (_sides.contains(sides[RubixCube::TOP])) {
-        rotateSide(RubixCube::TOP);
         foreach(Cube * cube, sides[RubixCube::TOP]->getCubes())
         {
             cube->rotateY(degree);
         }
+        rotateSide(RubixCube::TOP);
+
     } else if (_sides.contains(sides[RubixCube::DOWN])) {
-        rotateSide(RubixCube::DOWN);
+        degree *= -1;
         foreach(Cube * cube, sides[RubixCube::DOWN]->getCubes())
         {
             cube->rotateY(degree);
         }
+        //        foreach(Cube * cube, sides[DOWN]->getCubes())
+        //        {
+        //            qDebug() << cube->getId();
+        //        }
+        //        qDebug() << "+++++";
+        rotateSide(RubixCube::DOWN);
+        //        foreach(Cube * cube, sides[DOWN]->getCubes())
+        //        {
+        //            qDebug() << cube->getId();
+        //        }
+        //        qDebug() << "+++++";
     }
 }
 
@@ -115,23 +129,25 @@ void RubixCube::rotateZ(int block, int degree)
     QVector<Side*> _sides = getSides(cubes[block]);
 
     if (_sides.contains(sides[RubixCube::FRONT])) {
-        rotateSide(RubixCube::FRONT);
+        degree *= -1;
         foreach(Cube * cube, sides[RubixCube::FRONT]->getCubes())
         {
             cube->rotateZ(degree);
         }
+        rotateSide(RubixCube::FRONT);
+
     } else if (_sides.contains(sides[RubixCube::BACK])) {
-        rotateSide(RubixCube::BACK);
         foreach(Cube * cube, sides[RubixCube::BACK]->getCubes())
         {
             cube->rotateZ(degree);
         }
+        rotateSide(RubixCube::BACK);
     }
 }
 
 void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 {
-    rotateSingleSide(sides[side]);
+    rotateSingleSide(side);
 
     switch (side) {
     case FRONT:
@@ -218,9 +234,9 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         sides[FRONT]->getMid_row()->setBack_cube(sides[side]->getMid_row()->getBack_cube());
         sides[FRONT]->getBack_row()->setBack_cube(sides[side]->getBack_row()->getBack_cube());
 
-        sides[BACK]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getBack_cube());
-        sides[BACK]->getMid_row()->setFront_cube(sides[side]->getMid_row()->getBack_cube());
-        sides[BACK]->getBack_row()->setFront_cube(sides[side]->getBack_row()->getBack_cube());
+        sides[BACK]->getFront_row()->setBack_cube(sides[side]->getFront_row()->getFront_cube());
+        sides[BACK]->getMid_row()->setBack_cube(sides[side]->getMid_row()->getFront_cube());
+        sides[BACK]->getBack_row()->setBack_cube(sides[side]->getBack_row()->getFront_cube());
 
         sides[LEFT]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
         sides[LEFT]->getBack_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
@@ -229,9 +245,9 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         break;
     case DOWN:
 
-        sides[RIGHT]->getBack_row()->setFront_cube(sides[side]->getFront_row()->getFront_cube());
-        sides[RIGHT]->getBack_row()->setMid_cube(sides[side]->getFront_row()->getMid_cube());
-        sides[RIGHT]->getBack_row()->setBack_cube(sides[side]->getFront_row()->getBack_cube());
+        sides[RIGHT]->getFront_row()->setFront_cube(sides[side]->getBack_row()->getFront_cube());
+        sides[RIGHT]->getFront_row()->setMid_cube(sides[side]->getBack_row()->getMid_cube());
+        sides[RIGHT]->getFront_row()->setBack_cube(sides[side]->getBack_row()->getBack_cube());
 
         sides[FRONT]->getFront_row()->setFront_cube(sides[side]->getFront_row()->getBack_cube());
         sides[FRONT]->getMid_row()->setFront_cube(sides[side]->getMid_row()->getBack_cube());
@@ -249,28 +265,42 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
     }
 }
 
-void RubixCube::rotateSingleSide(Side* side)
+void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)
 {
+    Side* side = sides[sidename];
+    if (sidename == DOWN || sidename == FRONT || sidename == RIGHT) {
+        Cube* tmpFrontFront = side->getFront_row()->getFront_cube();
+        Cube* tmpFrontMid = side->getFront_row()->getMid_cube();
 
-    Cube* tmpFrontFront = side->getFront_row()->getFront_cube();
-    Cube* tmpFrontMid = side->getFront_row()->getMid_cube();
+        side->getFront_row()->setFront_cube(side->getFront_row()->getBack_cube());
+        side->getFront_row()->setMid_cube(side->getMid_row()->getBack_cube());
+        side->getFront_row()->setBack_cube(side->getBack_row()->getBack_cube());
+        side->getMid_row()->setBack_cube(side->getBack_row()->getMid_cube());
+        side->getBack_row()->setBack_cube(side->getBack_row()->getFront_cube());
+        side->getBack_row()->setMid_cube(side->getMid_row()->getFront_cube());
+        side->getBack_row()->setFront_cube(tmpFrontFront);
+        side->getMid_row()->setFront_cube(tmpFrontMid);
+    } else {
 
-    side->getFront_row()->setFront_cube(side->getFront_row()->getBack_cube());
-    side->getFront_row()->setMid_cube(side->getMid_row()->getBack_cube());
-    side->getFront_row()->setBack_cube(side->getBack_row()->getBack_cube());
-    side->getMid_row()->setBack_cube(side->getBack_row()->getMid_cube());
-    side->getBack_row()->setBack_cube(side->getBack_row()->getFront_cube());
-    side->getBack_row()->setMid_cube(side->getMid_row()->getFront_cube());
-    side->getBack_row()->setFront_cube(tmpFrontFront);
-    side->getMid_row()->setFront_cube(tmpFrontMid);
+        Cube* tmpFrontFront = side->getFront_row()->getFront_cube();
+        Cube* tmpFrontMid = side->getFront_row()->getMid_cube();
 
-    //    Row* tmpRow = side->getFront_row();
-    //    side->getFront_row()->setBack_cube(side->getFront_row()->getFront_cube());
-    //    side->getFront_row()->setMid_cube(side->getMid_row()->getFront_cube());
-    //    side->getFront_row()->setFront_cube(side->getBack_row()->getFront_cube());
-    //    side->getMid_row()->setFront_cube(side->getBack_row()->getMid_cube());
-    //    side->getBack_row()->setFront_cube(side->getBack_row()->getBack_cube());
-    //    side->getBack_row()->setMid_cube(side->getMid_row()->getBack_cube());
-    //    side->getBack_row()->setBack_cube(tmpRow->getBack_cube());
-    //    side->getMid_row()->setBack_cube(tmpRow->getMid_cube());
+        side->getFront_row()->setFront_cube(side->getBack_row()->getFront_cube());
+        side->getFront_row()->setMid_cube(side->getMid_row()->getFront_cube());
+        side->getMid_row()->setFront_cube(side->getBack_row()->getMid_cube());
+        side->getBack_row()->setFront_cube(side->getBack_row()->getBack_cube());
+        side->getBack_row()->setMid_cube(side->getMid_row()->getBack_cube());
+        side->getBack_row()->setBack_cube(side->getFront_row()->getBack_cube());
+        side->getMid_row()->setBack_cube(tmpFrontMid);
+        side->getFront_row()->setBack_cube(tmpFrontFront);
+
+        //        side->getFront_row()->setBack_cube(side->getFront_row()->getFront_cube());
+        //        side->getFront_row()->setMid_cube(side->getMid_row()->getFront_cube());
+        //        side->getFront_row()->setFront_cube(side->getBack_row()->getFront_cube());
+        //        side->getMid_row()->setFront_cube(side->getBack_row()->getMid_cube());
+        //        side->getBack_row()->setFront_cube(side->getBack_row()->getBack_cube());
+        //        side->getBack_row()->setMid_cube(side->getMid_row()->getBack_cube());
+        //        side->getBack_row()->setBack_cube(tmpFrontFront);
+        //        side->getMid_row()->setBack_cube(tmpFrontMid);
+    }
 }

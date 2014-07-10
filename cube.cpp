@@ -1,89 +1,10 @@
 #include "cube.h"
 #include <QDebug>
 
-int Cube::getXAngle() const
-{
-    return xAngle;
-}
-
-int Cube::getYAngle() const
-{
-    return yAngle;
-}
-
-int Cube::getZAngle() const
-{
-    return zAngle;
-}
-
-//QVector<QVector3D> Cube::getFrontColors() const
-//{
-//    return frontColors;
-//}
-
-//void Cube::setFrontColors(const QVector<QVector3D> &value)
-//{
-//    frontColors = value;
-//}
-
-//QVector<QVector3D> Cube::getBackColors() const
-//{
-//    return backColors;
-//}
-
-//void Cube::setBackColors(const QVector<QVector3D> &value)
-//{
-//    backColors = value;
-//}
-
-//QVector<QVector3D> Cube::getLeftColors() const
-//{
-//    return leftColors;
-//}
-
-//void Cube::setLeftColors(const QVector<QVector3D> &value)
-//{
-//    leftColors = value;
-//}
-
-//QVector<QVector3D> Cube::getRightColors() const
-//{
-//    return rightColors;
-//}
-
-//void Cube::setRightColors(const QVector<QVector3D> &value)
-//{
-//    rightColors = value;
-//}
-
-//QVector<QVector3D> Cube::getTopColors() const
-//{
-//    return topColors;
-//}
-
-//void Cube::setTopColors(const QVector<QVector3D> &value)
-//{
-//    topColors = value;
-//}
-
-//QVector<QVector3D> Cube::getBottomColors() const
-//{
-//    return bottomColors;
-//}
-
-//void Cube::setBottomColors(const QVector<QVector3D> &value)
-//{
-//    bottomColors = value;
-//}
-
-int Cube::getId() const
-{
-    return id;
-}
-
 Cube::Cube(int _id, float x, float y, float z)
     : id(_id)
     , position(x, y, z)
+
 {
     vertices << QVector3D(-0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) // Front
              << QVector3D(0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5)
@@ -115,6 +36,34 @@ Cube::Cube(int _id, float x, float y, float z)
     for (int i = 0; i < 36; ++i) {
         colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
     }
+    currentXVec = QVector3D(1, 0, 0);
+    currentYVec = QVector3D(0, 1, 0);
+    currentZVec = QVector3D(0, 0, 1);
+}
+
+//int Cube::getXAngle() const
+//{
+//    return xAngle;
+//}
+
+//int Cube::getYAngle() const
+//{
+//    return yAngle;
+//}
+
+//int Cube::getZAngle() const
+//{
+//    return zAngle;
+//}
+
+QQuaternion Cube::getRotation() const
+{
+    return rotation;
+}
+
+int Cube::getId() const
+{
+    return id;
 }
 
 QVector<QVector3D> Cube::getVertices() const
@@ -156,24 +105,16 @@ QVector3D Cube::getPosition() const
 
 void Cube::rotateX(int angle)
 {
-    xAngle += angle;
-    if (xAngle >= 360) {
-        xAngle = 0;
-    }
+    currentYVec = currentZVec * -1;
+    rotation *= QQuaternion::fromAxisAndAngle(currentXVec, angle);
 }
 
 void Cube::rotateY(int angle)
 {
-    yAngle += angle;
-    if (yAngle >= 360) {
-        yAngle = 0;
-    }
+    rotation *= QQuaternion::fromAxisAndAngle(currentYVec, angle);
 }
 
 void Cube::rotateZ(int angle)
 {
-    zAngle += angle;
-    if (zAngle >= 360) {
-        zAngle = 0;
-    }
+    rotation *= QQuaternion::fromAxisAndAngle(currentZVec, angle);
 }

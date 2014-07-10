@@ -14,15 +14,15 @@ GLWidget::GLWidget(QWidget* parent)
     beta = -25;
     distance = 8;
 
-//    int id = 0;
-//    for (int x = -1.5; x < 1.5; ++x) {
-//        for (int y = -1.5; y < 1.5; ++y) {
-//            for (int z = -1.5; z < 1.5; ++z) {
-//                cubes << new Cube(id, x, y, z);
-//                id++;
-//            }
-//        }
-//    }
+    //    int id = 0;
+    //    for (int x = -1.5; x < 1.5; ++x) {
+    //        for (int y = -1.5; y < 1.5; ++y) {
+    //            for (int z = -1.5; z < 1.5; ++z) {
+    //                cubes << new Cube(id, x, y, z);
+    //                id++;
+    //            }
+    //        }
+    //    }
 }
 
 GLWidget::~GLWidget()
@@ -67,15 +67,21 @@ void GLWidget::drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix
 
 void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
 {
+    foreach(Cube * cube, rCube.getCubes())
+    {
+        if (cube->getId() == 26) {
+            //            QMatrix4x4 oldMMatrix = mMatrix;
+            mMatrix.setToIdentity();
 
+            //            mMatrix.rotate(cube->getYAngle(), QVector3D(0, 1, 0));
 
-        foreach (Cube* cube, rCube.getCubes()) {
-        mMatrix.setToIdentity();
-        mMatrix.rotate(cube->getXAngle(),QVector3D(1,0,0));
-        mMatrix.rotate(cube->getYAngle(),QVector3D(0,1,0));
-        mMatrix.rotate(cube->getZAngle(),QVector3D(0,0,1));
-        mMatrix.translate(cube->getPosition());
-        drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
+            //            mMatrix.rotate(cube->getZAngle(), QVector3D(0, 0, 1));
+            //            mMatrix.rotate(cube->getXAngle(), QVector3D(1, 0, 0));
+            //            QQuaternion rotation = QQuaternion::fromAxisAndAngle(1, 0, 0, cube->getXAngle()) * QQuaternion::fromAxisAndAngle(0, 1, 0, cube->getYAngle()) * QQuaternion::fromAxisAndAngle(0, 0, 1, cube->getZAngle());
+            mMatrix.rotate(cube->getRotation());
+            mMatrix.translate(cube->getPosition());
+            drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
+        }
         //drawCoords(mMatrix,vMatrix,pMatrix);
     }
 }
@@ -102,7 +108,7 @@ void GLWidget::paintGL()
     // shaderProgram.setUniformValue("color", QColor(Qt::blue));
     drawCube(mMatrix, vMatrix, pMatrix);
 
-    drawCoords(mMatrix,vMatrix,pMatrix);
+    drawCoords(mMatrix, vMatrix, pMatrix);
 
     if (pick) {
         glFlush();
@@ -203,34 +209,39 @@ void GLWidget::wheelEvent(QWheelEvent* event)
 
 void GLWidget::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_V) {
-        rotateVertical();
-    }
-    if (event->key() == Qt::Key_H) {
-        rotateHorizontal();
-    }
-    if (event->key() == Qt::Key_Z) {
-        rotateDepth();
+    if (selectedCube != -1) {
+
+        if (event->key() == Qt::Key_V) {
+            rotateVertical();
+        }
+        if (event->key() == Qt::Key_H) {
+            rotateHorizontal();
+        }
+        if (event->key() == Qt::Key_Z) {
+            rotateDepth();
+        }
+    } else {
+        qDebug() << "No Cube selected!";
     }
     event->accept();
 }
 
 void GLWidget::rotateVertical()
 {
-    rCube.rotateX(selectedCube,90);
+    rCube.rotateX(selectedCube, 90);
     updateGL();
 }
 
 void GLWidget::rotateHorizontal()
 {
-    rCube.rotateY(selectedCube,90);
+    rCube.rotateY(selectedCube, 90);
     updateGL();
 }
 
 void GLWidget::rotateDepth()
 {
-  rCube.rotateZ(selectedCube,90);
-  updateGL();
+    rCube.rotateZ(selectedCube, 90);
+    updateGL();
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
@@ -243,17 +254,16 @@ void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
 }
 void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
 {
-    Cube cube = Cube(1,0,0,0);
+    Cube cube = Cube(1, 0, 0, 0);
     mMatrix.setToIdentity();
-    mMatrix.scale(10,0.02,0.02);
-    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
+    mMatrix.scale(10, 0.02, 0.02);
+    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
-    mMatrix.scale(0.02,10,0.02);
-    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
+    mMatrix.scale(0.02, 10, 0.02);
+    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
-    mMatrix.scale(0.02,0.02,10);
-    drawSingleCube(cube,mMatrix,vMatrix, pMatrix);
-
+    mMatrix.scale(0.02, 0.02, 10);
+    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 }

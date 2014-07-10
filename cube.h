@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QVector3D>
+#include <QQuaternion>
 
 class Cube {
 private:
@@ -18,13 +19,16 @@ private:
 
     QVector<QVector3D> colorsById;
     int id;
-    int xAngle = 0;
-    int yAngle = 0;
-    int zAngle = 0;
+    //    int xAngle = 0;
+    //    int yAngle = 0;
+    //    int zAngle = 0;
+    QQuaternion rotation;
+    QVector3D currentXVec;
+    QVector3D currentYVec;
+    QVector3D currentZVec;
     QVector3D position;
 
 public:
-
     Cube(int _id = 1, float x = 0, float y = 0, float z = 0);
     QVector<QVector3D> getVertices() const;
     QVector<QVector3D> getColorVectorById() const;
@@ -34,17 +38,18 @@ public:
 
     QVector3D getPosition() const;
 
-    int getXAngle() const;
+//    int getXAngle() const;
 
-    int getYAngle() const;
-    int getZAngle() const;
+//    int getYAngle() const;
+//    int getZAngle() const;
 
     void rotateX(int angle);
     void rotateY(int angle);
     void rotateZ(int angle);
 
-
     int getId() const;
+
+    QQuaternion getRotation() const;
 
 
 private:
