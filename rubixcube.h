@@ -44,6 +44,7 @@ private:
     QVector<Side*> getSides(Cube* cube);
     void rotateSide(RubixCube::SIDENAMES side);
     void rotateSingleSide(RubixCube::SIDENAMES sidename);
+    void outputState();
 };
 
 #endif // RUBIXCUBE_H

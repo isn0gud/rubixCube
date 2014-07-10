@@ -1,5 +1,7 @@
 #include "cube.h"
 #include <QDebug>
+#include <QMatrix4x4>
+#include <QColor>
 
 Cube::Cube(int _id, float x, float y, float z)
     : id(_id)
@@ -19,26 +21,33 @@ Cube::Cube(int _id, float x, float y, float z)
              << QVector3D(-0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, 0.5) // Bottom
              << QVector3D(0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, -0.5);
 
-    frontColors << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) // Front
-                << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3) << QVector3D(0.1, 0.2, 0.3);
-    backColors << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) // Back
-               << QVector3D(1, 1, 1) << QVector3D(1, 1, 1) << QVector3D(1, 1, 1);
-    leftColors << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) // Left
-               << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0) << QVector3D(0.5, 0.5, 0);
-    rightColors << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) // Right
-                << QVector3D(0, 1, 0) << QVector3D(0, 1, 0) << QVector3D(0, 1, 0);
-    topColors << QVector3D(0.5, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) // Top
-              << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5) << QVector3D(0, 0.5, 0.5);
-    bottomColors << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) // Bottom
-                 << QVector3D(0, 0, 1) << QVector3D(0, 0, 1) << QVector3D(0, 0, 1);
+    for (int i = 0; i < 6; ++i) {
+        frontColors << QVector3D(1, 0, 0);
+    }
+    for (int i = 0; i < 6; ++i) {
+        backColors << QVector3D(1, 0.5, 0);
+    }
+    for (int i = 0; i < 6; ++i) {
+        leftColors << QVector3D(0, 0.5, 0);
+    }
+    for (int i = 0; i < 6; ++i) {
+        rightColors << QVector3D(0, 0, 0.5);
+    }
+    for (int i = 0; i < 6; ++i) {
+        topColors << QVector3D(1, 1, 1);
+    }
+    for (int i = 0; i < 6; ++i) {
+        bottomColors << QVector3D(1, 1, 0);
+    }
     setToStdColor();
     //    qDebug() << (id & 0x000000FF) / 255.0f << endl;
     for (int i = 0; i < 36; ++i) {
         colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
     }
-    currentXVec = QVector3D(1, 0, 0);
-    currentYVec = QVector3D(0, 1, 0);
-    currentZVec = QVector3D(0, 0, 1);
+
+    //    currentXVec = QVector3D(1, 0, 0);
+    //    currentYVec = QVector3D(0, 1, 0);
+    //    currentZVec = QVector3D(0, 0, 1);
 }
 
 //int Cube::getXAngle() const
@@ -59,6 +68,15 @@ Cube::Cube(int _id, float x, float y, float z)
 QQuaternion Cube::getRotation() const
 {
     return rotation;
+}
+
+void Cube::setToColor(QColor color)
+{
+    colors.clear();
+    for (int i = 0; i < 36; ++i) {
+
+        colors << QVector3D(color.red() / 255.0f, color.green() / 255.0f, color.blue() / 255.0f);
+    }
 }
 
 int Cube::getId() const
@@ -105,16 +123,32 @@ QVector3D Cube::getPosition() const
 
 void Cube::rotateX(int angle)
 {
-    currentYVec = currentZVec * -1;
-    rotation *= QQuaternion::fromAxisAndAngle(currentXVec, angle);
+    //    xAngle += angle;
+    //    xAngle = xAngle % 360;
+    //    if (xAngle % 360 == 0 && angle >) {
+
+    //      } else {
+    //      }
+
+    //    QMatrix4x4 rotMatrix;
+    //    rotMatrix.rotate(angle, currentXVec);
+    //    currentXVec = rotMatrix.map(QVector3D(1, 0, 0));
+
+    rotation = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), angle) * rotation;
 }
 
 void Cube::rotateY(int angle)
 {
-    rotation *= QQuaternion::fromAxisAndAngle(currentYVec, angle);
+    //    QMatrix4x4 rotMatrix;
+    //    rotMatrix.rotate(angle, currentYVec);
+    //    currentYVec = rotMatrix.map(QVector3D(0, 1, 0));
+    rotation = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), angle) * rotation;
 }
 
 void Cube::rotateZ(int angle)
 {
-    rotation *= QQuaternion::fromAxisAndAngle(currentZVec, angle);
+    //    QMatrix4x4 rotMatrix;
+    //    rotMatrix.rotate(angle, currentZVec);
+    //    currentZVec = rotMatrix.map(QVector3D(0, 0, 1));
+    rotation = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), angle) * rotation;
 }

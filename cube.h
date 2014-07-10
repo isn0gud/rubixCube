@@ -4,6 +4,7 @@
 #include <QVector>
 #include <QVector3D>
 #include <QQuaternion>
+#include <QColor>
 
 class Cube {
 private:
@@ -23,9 +24,9 @@ private:
     //    int yAngle = 0;
     //    int zAngle = 0;
     QQuaternion rotation;
-    QVector3D currentXVec;
-    QVector3D currentYVec;
-    QVector3D currentZVec;
+    //    QVector3D currentXVec;
+    //    QVector3D currentYVec;
+    //    QVector3D currentZVec;
     QVector3D position;
 
 public:
@@ -38,10 +39,10 @@ public:
 
     QVector3D getPosition() const;
 
-//    int getXAngle() const;
+    //    int getXAngle() const;
 
-//    int getYAngle() const;
-//    int getZAngle() const;
+    //    int getYAngle() const;
+    //    int getZAngle() const;
 
     void rotateX(int angle);
     void rotateY(int angle);
@@ -51,6 +52,7 @@ public:
 
     QQuaternion getRotation() const;
 
+    void setToColor(QColor color);
 
 private:
 };

@@ -3,9 +3,7 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include "cube.h"
-#include <QDebug>
-
-// https://github.com/tu-pencil/Rubik/blob/master/RubiksCube.cpp
+//#include <QDebug>
 
 GLWidget::GLWidget(QWidget* parent)
     : QGLWidget(QGLFormat(), parent)
@@ -13,16 +11,6 @@ GLWidget::GLWidget(QWidget* parent)
     alpha = 25;
     beta = -25;
     distance = 8;
-
-    //    int id = 0;
-    //    for (int x = -1.5; x < 1.5; ++x) {
-    //        for (int y = -1.5; y < 1.5; ++y) {
-    //            for (int z = -1.5; z < 1.5; ++z) {
-    //                cubes << new Cube(id, x, y, z);
-    //                id++;
-    //            }
-    //        }
-    //    }
 }
 
 GLWidget::~GLWidget()
@@ -69,19 +57,19 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
 {
     foreach(Cube * cube, rCube.getCubes())
     {
-        if (cube->getId() == 26) {
-            //            QMatrix4x4 oldMMatrix = mMatrix;
-            mMatrix.setToIdentity();
+        //        if (cube->getId() == 26) {
+        //            QMatrix4x4 oldMMatrix = mMatrix;
+        mMatrix.setToIdentity();
 
-            //            mMatrix.rotate(cube->getYAngle(), QVector3D(0, 1, 0));
+        //            mMatrix.rotate(cube->getYAngle(), QVector3D(0, 1, 0));
 
-            //            mMatrix.rotate(cube->getZAngle(), QVector3D(0, 0, 1));
-            //            mMatrix.rotate(cube->getXAngle(), QVector3D(1, 0, 0));
-            //            QQuaternion rotation = QQuaternion::fromAxisAndAngle(1, 0, 0, cube->getXAngle()) * QQuaternion::fromAxisAndAngle(0, 1, 0, cube->getYAngle()) * QQuaternion::fromAxisAndAngle(0, 0, 1, cube->getZAngle());
-            mMatrix.rotate(cube->getRotation());
-            mMatrix.translate(cube->getPosition());
-            drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
-        }
+        //            mMatrix.rotate(cube->getZAngle(), QVector3D(0, 0, 1));
+        //            mMatrix.rotate(cube->getXAngle(), QVector3D(1, 0, 0));
+        //            QQuaternion rotation = QQuaternion::fromAxisAndAngle(1, 0, 0, cube->getXAngle()) * QQuaternion::fromAxisAndAngle(0, 1, 0, cube->getYAngle()) * QQuaternion::fromAxisAndAngle(0, 0, 1, cube->getZAngle());
+        mMatrix.rotate(cube->getRotation());
+        mMatrix.translate(cube->getPosition());
+        drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
+        //        }
         //drawCoords(mMatrix,vMatrix,pMatrix);
     }
 }
@@ -211,13 +199,13 @@ void GLWidget::keyPressEvent(QKeyEvent* event)
 {
     if (selectedCube != -1) {
 
-        if (event->key() == Qt::Key_V) {
+        if (event->key() == Qt::Key_R) {
             rotateVertical();
         }
-        if (event->key() == Qt::Key_H) {
+        if (event->key() == Qt::Key_G) {
             rotateHorizontal();
         }
-        if (event->key() == Qt::Key_Z) {
+        if (event->key() == Qt::Key_B) {
             rotateDepth();
         }
     } else {
@@ -257,13 +245,16 @@ void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMa
     Cube cube = Cube(1, 0, 0, 0);
     mMatrix.setToIdentity();
     mMatrix.scale(10, 0.02, 0.02);
+    cube.setToColor(Qt::red);
     drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
     mMatrix.scale(0.02, 10, 0.02);
+    cube.setToColor(Qt::green);
     drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     mMatrix.setToIdentity();
     mMatrix.scale(0.02, 0.02, 10);
+    cube.setToColor(Qt::blue);
     drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 }
