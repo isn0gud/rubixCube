@@ -60,9 +60,7 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
         //        if (cube->getId() == 26) {
         //            QMatrix4x4 oldMMatrix = mMatrix;
         mMatrix.setToIdentity();
-
         //            mMatrix.rotate(cube->getYAngle(), QVector3D(0, 1, 0));
-
         //            mMatrix.rotate(cube->getZAngle(), QVector3D(0, 0, 1));
         //            mMatrix.rotate(cube->getXAngle(), QVector3D(1, 0, 0));
         //            QQuaternion rotation = QQuaternion::fromAxisAndAngle(1, 0, 0, cube->getXAngle()) * QQuaternion::fromAxisAndAngle(0, 1, 0, cube->getYAngle()) * QQuaternion::fromAxisAndAngle(0, 0, 1, cube->getZAngle());
@@ -76,11 +74,10 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
 
 void GLWidget::paintGL()
 {
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mMatrix = QMatrix4x4();
-    vMatrix = QMatrix4x4();
+    QMatrix4x4 mMatrix;
+    QMatrix4x4 vMatrix;
 
     QMatrix4x4 cameraTransformation;
     cameraTransformation.rotate(alpha, 0, 1, 0);
@@ -90,26 +87,30 @@ void GLWidget::paintGL()
     QVector3D cameraUpDirection = cameraTransformation * QVector3D(0, 1, 0);
 
     vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
-
     shaderProgram.bind();
-
     // shaderProgram.setUniformValue("color", QColor(Qt::blue));
     drawCube(mMatrix, vMatrix, pMatrix);
 
-    drawCoords(mMatrix, vMatrix, pMatrix);
+    //    drawCoords(mMatrix, vMatrix, pMatrix);
+    //draw big black cube
+    Cube cube = Cube(1, 0, 0, 0);
+    mMatrix.setToIdentity();
+    mMatrix.scale(3.07, 3.07, 3.07);
+    cube.setToColor(Qt::black);
+    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     if (pick) {
         glFlush();
         glFinish();
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        //        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 
         unsigned char data[4];
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-        qDebug() << data[0] << endl;
+        //        qDebug() << data[0] << endl;
         if (data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 rCube.getCubes().at(selectedCube)->setToStdColor();
@@ -209,7 +210,7 @@ void GLWidget::keyPressEvent(QKeyEvent* event)
             rotateDepth();
         }
     } else {
-        qDebug() << "No Cube selected!";
+        //        qDebug() << "No Cube selected!";
     }
     event->accept();
 }

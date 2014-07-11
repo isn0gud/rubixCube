@@ -1,12 +1,11 @@
 #include "cube.h"
-#include <QDebug>
 #include <QMatrix4x4>
 #include <QColor>
+//#include <QDebug>
 
 Cube::Cube(int _id, float x, float y, float z)
     : id(_id)
     , position(x, y, z)
-
 {
     vertices << QVector3D(-0.48, -0.48, 0.48) << QVector3D(0.48, -0.48, 0.48) << QVector3D(0.48, 0.48, 0.48) // Front
              << QVector3D(0.48, 0.48, 0.48) << QVector3D(-0.48, 0.48, 0.48) << QVector3D(-0.48, -0.48, 0.48)
@@ -20,30 +19,8 @@ Cube::Cube(int _id, float x, float y, float z)
              << QVector3D(0.48, 0.48, -0.48) << QVector3D(-0.48, 0.48, -0.48) << QVector3D(-0.48, 0.48, 0.48)
              << QVector3D(-0.48, -0.48, -0.48) << QVector3D(0.48, -0.48, -0.48) << QVector3D(0.48, -0.48, 0.48) // Bottom
              << QVector3D(0.48, -0.48, 0.48) << QVector3D(-0.48, -0.48, 0.48) << QVector3D(-0.48, -0.48, -0.48);
-
-    for (int i = 0; i < 6; ++i) {
-        frontColors << QVector3D(0.6, 0, 0);
-    }
-    for (int i = 0; i < 6; ++i) {
-        backColors << QVector3D(0.9, 0.4, 0);
-    }
-    for (int i = 0; i < 6; ++i) {
-        leftColors << QVector3D(0, 0.4, 0);
-    }
-    for (int i = 0; i < 6; ++i) {
-        rightColors << QVector3D(0, 0, 0.4);
-    }
-    for (int i = 0; i < 6; ++i) {
-        topColors << QVector3D(0.9, 0.9, 0.9);
-    }
-    for (int i = 0; i < 6; ++i) {
-        bottomColors << QVector3D(0.8, 0.8, 0);
-    }
     setToStdColor();
     //    qDebug() << (id & 0x000000FF) / 255.0f << endl;
-    for (int i = 0; i < 36; ++i) {
-        colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
-    }
 
     //    currentXVec = QVector3D(1, 0, 0);
     //    currentYVec = QVector3D(0, 1, 0);
@@ -91,7 +68,10 @@ QVector<QVector3D> Cube::getVertices() const
 
 QVector<QVector3D> Cube::getColorVectorById() const
 {
-
+    QVector<QVector3D> colorsById;
+    for (int i = 0; i < 36; ++i) {
+        colorsById << QVector3D(id / 255.0f, id / 255.0f, id / 255.0f);
+    }
     return colorsById;
 }
 
@@ -103,7 +83,25 @@ QVector<QVector3D> Cube::getColors() const
 void Cube::setToStdColor()
 {
     colors.clear();
-    colors << frontColors << backColors << leftColors << rightColors << topColors << bottomColors;
+
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0.6, 0, 0); //FRONT
+    }
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0.9, 0.4, 0); //BACK
+    }
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0, 0.4, 0); //LEFT
+    }
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0, 0, 0.4); //RIGHT
+    }
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0.9, 0.9, 0.9); //TOP
+    }
+    for (int i = 0; i < 6; ++i) {
+        colors << QVector3D(0.8, 0.8, 0); //BOTTOM
+    }
 }
 
 void Cube::setColorHighlight()
@@ -123,17 +121,9 @@ QVector3D Cube::getPosition() const
 
 void Cube::rotateX(int angle)
 {
-    //    xAngle += angle;
-    //    xAngle = xAngle % 360;
-    //    if (xAngle % 360 == 0 && angle >) {
-
-    //      } else {
-    //      }
-
     //    QMatrix4x4 rotMatrix;
     //    rotMatrix.rotate(angle, currentXVec);
     //    currentXVec = rotMatrix.map(QVector3D(1, 0, 0));
-
     rotation = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), angle) * rotation;
 }
 
