@@ -8,36 +8,36 @@ Cube::Cube(int _id, float x, float y, float z)
     , position(x, y, z)
 
 {
-    vertices << QVector3D(-0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) // Front
-             << QVector3D(0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5)
-             << QVector3D(0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) // Back
-             << QVector3D(-0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, -0.5, -0.5)
-             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, 0.5, 0.5) // Left
-             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, -0.5, -0.5)
-             << QVector3D(0.5, -0.5, 0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, 0.5, -0.5) // Right
-             << QVector3D(0.5, 0.5, -0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, -0.5, 0.5)
-             << QVector3D(-0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, 0.5) << QVector3D(0.5, 0.5, -0.5) // Top
-             << QVector3D(0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, -0.5) << QVector3D(-0.5, 0.5, 0.5)
-             << QVector3D(-0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, -0.5) << QVector3D(0.5, -0.5, 0.5) // Bottom
-             << QVector3D(0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, 0.5) << QVector3D(-0.5, -0.5, -0.5);
+    vertices << QVector3D(-0.48, -0.48, 0.48) << QVector3D(0.48, -0.48, 0.48) << QVector3D(0.48, 0.48, 0.48) // Front
+             << QVector3D(0.48, 0.48, 0.48) << QVector3D(-0.48, 0.48, 0.48) << QVector3D(-0.48, -0.48, 0.48)
+             << QVector3D(0.48, -0.48, -0.48) << QVector3D(-0.48, -0.48, -0.48) << QVector3D(-0.48, 0.48, -0.48) // Back
+             << QVector3D(-0.48, 0.48, -0.48) << QVector3D(0.48, 0.48, -0.48) << QVector3D(0.48, -0.48, -0.48)
+             << QVector3D(-0.48, -0.48, -0.48) << QVector3D(-0.48, -0.48, 0.48) << QVector3D(-0.48, 0.48, 0.48) // Left
+             << QVector3D(-0.48, 0.48, 0.48) << QVector3D(-0.48, 0.48, -0.48) << QVector3D(-0.48, -0.48, -0.48)
+             << QVector3D(0.48, -0.48, 0.48) << QVector3D(0.48, -0.48, -0.48) << QVector3D(0.48, 0.48, -0.48) // Right
+             << QVector3D(0.48, 0.48, -0.48) << QVector3D(0.48, 0.48, 0.48) << QVector3D(0.48, -0.48, 0.48)
+             << QVector3D(-0.48, 0.48, 0.48) << QVector3D(0.48, 0.48, 0.48) << QVector3D(0.48, 0.48, -0.48) // Top
+             << QVector3D(0.48, 0.48, -0.48) << QVector3D(-0.48, 0.48, -0.48) << QVector3D(-0.48, 0.48, 0.48)
+             << QVector3D(-0.48, -0.48, -0.48) << QVector3D(0.48, -0.48, -0.48) << QVector3D(0.48, -0.48, 0.48) // Bottom
+             << QVector3D(0.48, -0.48, 0.48) << QVector3D(-0.48, -0.48, 0.48) << QVector3D(-0.48, -0.48, -0.48);
 
     for (int i = 0; i < 6; ++i) {
-        frontColors << QVector3D(1, 0, 0);
+        frontColors << QVector3D(0.6, 0, 0);
     }
     for (int i = 0; i < 6; ++i) {
-        backColors << QVector3D(1, 0.5, 0);
+        backColors << QVector3D(0.9, 0.4, 0);
     }
     for (int i = 0; i < 6; ++i) {
-        leftColors << QVector3D(0, 0.5, 0);
+        leftColors << QVector3D(0, 0.4, 0);
     }
     for (int i = 0; i < 6; ++i) {
-        rightColors << QVector3D(0, 0, 0.5);
+        rightColors << QVector3D(0, 0, 0.4);
     }
     for (int i = 0; i < 6; ++i) {
-        topColors << QVector3D(1, 1, 1);
+        topColors << QVector3D(0.9, 0.9, 0.9);
     }
     for (int i = 0; i < 6; ++i) {
-        bottomColors << QVector3D(1, 1, 0);
+        bottomColors << QVector3D(0.8, 0.8, 0);
     }
     setToStdColor();
     //    qDebug() << (id & 0x000000FF) / 255.0f << endl;
@@ -111,7 +111,7 @@ void Cube::setColorHighlight()
     QVector<QVector3D> highlightedColors;
     for (int i = 0; i < colors.size(); ++i) {
         //      colors.at(i) *= QVector3D(1,0,0);
-        highlightedColors << colors.at(i) * QVector3D(1, 0.5, 0.5);
+        highlightedColors << colors.at(i) * QVector3D(0.3, 0.3, 0.3);
     }
     colors = highlightedColors;
 }
