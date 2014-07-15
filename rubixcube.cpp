@@ -17,24 +17,6 @@
  *           |
  *          4
  */
-
-QVector<Cube*> RubixCube::getCubes() const
-{
-    return cubes;
-}
-
-QVector<Side*> RubixCube::getSides(Cube* cube)
-{
-    QVector<Side*> _sides;
-    foreach(Side * side, sides)
-    {
-        if (side->getCubes().contains(cube)) {
-            _sides.append(side);
-        }
-    }
-    return _sides;
-}
-
 RubixCube::RubixCube()
 {
     int id = 0;
@@ -68,8 +50,47 @@ RubixCube::RubixCube()
     }
     for (int i = 0; i < 6; ++i) {
         sides.append(new Side(vSides[i]));
+        initialSideIds << sides[i]->sideAsIds();
     }
+
     outputState();
+}
+QVector<Cube*> RubixCube::getCubes() const
+{
+    return cubes;
+}
+QVector<Side*> RubixCube::getSides() const
+{
+    return sides;
+}
+
+bool RubixCube::equalSides(QVector<Side*> _sides) const
+{
+
+    QVector<int> currentSideIds;
+    foreach(Side * side, _sides)
+    {
+        currentSideIds << side->sideAsIds();
+    }
+    bool equal = true;
+    for (int i = 0; i < initialSideIds.size(); ++i) {
+        if (!(initialSideIds.at(i) == currentSideIds.at(i))) {
+            equal = false;
+        }
+    }
+    return equal;
+}
+
+QVector<Side*> RubixCube::getSides(Cube* cube)
+{
+    QVector<Side*> _sides;
+    foreach(Side * side, sides)
+    {
+        if (side->getCubes().contains(cube)) {
+            _sides.append(side);
+        }
+    }
+    return _sides;
 }
 
 void RubixCube::rotateX(int block, int degree, bool rotPositiv)
@@ -316,6 +337,12 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         break;
     }
     outputState();
+
+    if (equalSides(sides)) {
+        emit correctCube();
+    } else {
+        emit incorrectCube();
+    }
 }
 
 void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)

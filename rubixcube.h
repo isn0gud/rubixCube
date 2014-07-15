@@ -26,6 +26,7 @@ class RubixCube : public QObject {
 private:
     QVector<Cube*> cubes;
     QVector<Side*> sides;
+    QVector<int> initialSideIds;
     const int rotationSpeed = 10;
 
 public:
@@ -42,10 +43,15 @@ public:
     void rotateY(int block, int degree, bool rotPositiv);
     void rotateZ(int block, int degree, bool rotPositiv);
     QVector<Cube*> getCubes() const;
+    QVector<Side*> getSides() const;
+
 signals:
     void updateGL();
+    void correctCube();
+    void incorrectCube();
 
 private:
+    bool equalSides(QVector<Side*> _sides) const;
     QVector<Side*> getSides(Cube* cube);
     void rotateSide(RubixCube::SIDENAMES side);
     void rotateSingleSide(RubixCube::SIDENAMES sidename);

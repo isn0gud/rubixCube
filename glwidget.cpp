@@ -22,17 +22,31 @@ QSize GLWidget::sizeHint() const
     return QSize(640, 480);
 }
 
+void GLWidget::correctCube()
+{
+    qglClearColor(solved);
+    qDebug() << "correctCube";
+}
+
+void GLWidget::incorrectCube()
+{
+    qglClearColor(unsolved);
+    qDebug() << "incorrectCube";
+}
+
 void GLWidget::initializeGL()
 {
     //connect signals to rCube
     connect(&rCube, &RubixCube::updateGL, this, &GLWidget::updateGL);
+    connect(&rCube, &RubixCube::correctCube, this, &GLWidget::correctCube);
+    connect(&rCube, &RubixCube::incorrectCube, this, &GLWidget::incorrectCube);
 
     glEnable(GL_DEPTH_TEST);
     //only render polygons that show thier front side
     glEnable(GL_CULL_FACE);
 
     //set background color
-    qglClearColor(QColor(Qt::gray));
+    qglClearColor(solved);
 
     shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/shader/vertexShader.vsh");
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
@@ -92,6 +106,7 @@ void GLWidget::paintGL()
     vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
     shaderProgram.bind();
     // shaderProgram.setUniformValue("color", QColor(Qt::blue));
+
     drawCube(mMatrix, vMatrix, pMatrix);
 
     //    drawCoords(mMatrix, vMatrix, pMatrix);
@@ -118,7 +133,7 @@ void GLWidget::paintGL()
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
         qDebug() << data[0] << data[1] << data[2] << endl;
-        if (data[0] >= 0 && data[0] <= 27) {
+        if ((data[0] == data[1]) && (data[1] == data[2]) && data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 rCube.getCubes().at(selectedCube)->setToStdColor();
                 selectedCube = -1;
@@ -246,6 +261,7 @@ void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
     updateGL();
     event->accept();
 }
+
 void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
 {
     Cube cube = Cube(1, 0, 0, 0);

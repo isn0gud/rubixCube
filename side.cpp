@@ -63,3 +63,14 @@ QVector<Cube*> Side::getCubes()
           << back_row->getFront_cube() << back_row->getMid_cube() << back_row->getBack_cube();
     return cubes;
 }
+
+QVector<int> Side::sideAsIds()
+{
+    QVector<int> ids;
+    QVector<Cube*> cubes = getCubes();
+    foreach(Cube * cube, cubes)
+    {
+        ids << cube->getId();
+    }
+    return ids;
+}

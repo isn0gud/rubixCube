@@ -26,11 +26,20 @@ private:
     QPoint lastMousePosition;
 
     bool pick = false;
+//    bool correct = true;
+
+    const QColor solved = QColor(17, 51, 9);
+    const QColor unsolved = QColor(51, 9, 9);
 
 public:
     explicit GLWidget(QWidget* parent = 0);
     ~GLWidget();
     QSize sizeHint() const;
+
+public
+slots:
+    void correctCube();
+    void incorrectCube();
 
 protected:
     void initializeGL();
@@ -44,9 +53,10 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* event);
 
 private:
-//    void rotateVertical();
-//    void rotateHorizontal();
-//    void rotateDepth();
+    //    void rotateVertical();
+    //    void rotateHorizontal();
+    //    void rotateDepth();
+
     void drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
