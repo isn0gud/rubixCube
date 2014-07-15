@@ -24,6 +24,9 @@ QSize GLWidget::sizeHint() const
 
 void GLWidget::initializeGL()
 {
+    //connect signals to rCube
+    connect(&rCube, &RubixCube::updateGL, this, &GLWidget::updateGL);
+
     glEnable(GL_DEPTH_TEST);
     //only render polygons that show thier front side
     glEnable(GL_CULL_FACE);
@@ -93,11 +96,11 @@ void GLWidget::paintGL()
 
     //    drawCoords(mMatrix, vMatrix, pMatrix);
     //draw big black cube
-    Cube cube = Cube(1, 0, 0, 0);
-    mMatrix.setToIdentity();
-    mMatrix.scale(3.07, 3.07, 3.07);
-    cube.setToColor(Qt::black);
-    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
+    //    Cube cube = Cube(1, 0, 0, 0);
+    //    mMatrix.setToIdentity();
+    //    mMatrix.scale(3.07, 3.07, 3.07);
+    //    cube.setToColor(Qt::black);
+    //    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
     if (pick) {
         glFlush();
@@ -107,10 +110,14 @@ void GLWidget::paintGL()
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 
+//        GLint enumBuffer;
+//        glGetIntegerv(GL_READ_BUFFER, &enumBuffer);
+//        qDebug() << enumBuffer;
+
         unsigned char data[4];
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-        //        qDebug() << data[0] << endl;
+        qDebug() << data[0] << data[1] << data[2] << endl;
         if (data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 rCube.getCubes().at(selectedCube)->setToStdColor();

@@ -1,5 +1,5 @@
 #include "rubixcube.h"
-//#include <QDebug>
+#include <QDebug>
 
 /**
  * @brief RubixCube::RubixCube
@@ -69,25 +69,29 @@ RubixCube::RubixCube()
     for (int i = 0; i < 6; ++i) {
         sides.append(new Side(vSides[i]));
     }
-//    outputState();
+        outputState();
 }
 
 void RubixCube::rotateX(int block, int degree)
 {
     QVector<Side*> _sides = getSides(cubes[block]);
-
     if (_sides.contains(sides[RubixCube::RIGHT])) {
-        foreach(Cube * cube, sides[RubixCube::RIGHT]->getCubes())
-        {
-            cube->rotateX(degree);
+
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::RIGHT]->getCubes())
+            {
+                cube->rotateX(rotationSpeed);
+            }
+            emit updateGL();
         }
         rotateSide(RubixCube::RIGHT);
-
     } else if (_sides.contains(sides[RubixCube::LEFT])) {
-        degree *= -1;
-        foreach(Cube * cube, sides[RubixCube::LEFT]->getCubes())
-        {
-            cube->rotateX(degree);
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::LEFT]->getCubes())
+            {
+                cube->rotateX(-rotationSpeed);
+            }
+            emit updateGL();
         }
         rotateSide(RubixCube::LEFT);
     }
@@ -95,33 +99,26 @@ void RubixCube::rotateX(int block, int degree)
 
 void RubixCube::rotateY(int block, int degree)
 {
-    //    cubes[block]->rotateY(degree);
     QVector<Side*> _sides = getSides(cubes[block]);
-
     if (_sides.contains(sides[RubixCube::TOP])) {
-        foreach(Cube * cube, sides[RubixCube::TOP]->getCubes())
-        {
-            cube->rotateY(degree);
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::TOP]->getCubes())
+            {
+                cube->rotateY(rotationSpeed);
+            }
+            emit updateGL();
         }
         rotateSide(RubixCube::TOP);
 
     } else if (_sides.contains(sides[RubixCube::DOWN])) {
-        degree *= -1;
-        foreach(Cube * cube, sides[RubixCube::DOWN]->getCubes())
-        {
-            cube->rotateY(degree);
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::DOWN]->getCubes())
+            {
+                cube->rotateY(-rotationSpeed);
+            }
+            emit updateGL();
         }
-        //        foreach(Cube * cube, sides[DOWN]->getCubes())
-        //        {
-        //            qDebug() << cube->getId();
-        //        }
-        //        qDebug() << "+++++";
         rotateSide(RubixCube::DOWN);
-        //        foreach(Cube * cube, sides[DOWN]->getCubes())
-        //        {
-        //            qDebug() << cube->getId();
-        //        }
-        //        qDebug() << "+++++";
     }
 }
 
@@ -130,18 +127,23 @@ void RubixCube::rotateZ(int block, int degree)
     QVector<Side*> _sides = getSides(cubes[block]);
 
     if (_sides.contains(sides[RubixCube::FRONT])) {
-
-        foreach(Cube * cube, sides[RubixCube::FRONT]->getCubes())
-        {
-            cube->rotateZ(degree);
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::FRONT]->getCubes())
+            {
+                cube->rotateZ(rotationSpeed);
+            }
+            emit updateGL();
         }
         rotateSide(RubixCube::FRONT);
 
     } else if (_sides.contains(sides[RubixCube::BACK])) {
-        degree *= -1;
-        foreach(Cube * cube, sides[RubixCube::BACK]->getCubes())
-        {
-            cube->rotateZ(degree);
+
+        for (int i = 1; i <= degree; i = i + rotationSpeed) {
+            foreach(Cube * cube, sides[RubixCube::BACK]->getCubes())
+            {
+                cube->rotateZ(-rotationSpeed);
+            }
+            emit updateGL();
         }
         rotateSide(RubixCube::BACK);
     }
@@ -265,7 +267,7 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 
         break;
     }
-//    outputState();
+    outputState();
 }
 
 void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)
@@ -296,32 +298,23 @@ void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)
         side->getBack_row()->setBack_cube(side->getFront_row()->getBack_cube());
         side->getMid_row()->setBack_cube(tmpFrontMid);
         side->getFront_row()->setBack_cube(tmpFrontFront);
-
-        //        side->getFront_row()->setBack_cube(side->getFront_row()->getFront_cube());
-        //        side->getFront_row()->setMid_cube(side->getMid_row()->getFront_cube());
-        //        side->getFront_row()->setFront_cube(side->getBack_row()->getFront_cube());
-        //        side->getMid_row()->setFront_cube(side->getBack_row()->getMid_cube());
-        //        side->getBack_row()->setFront_cube(side->getBack_row()->getBack_cube());
-        //        side->getBack_row()->setMid_cube(side->getMid_row()->getBack_cube());
-        //        side->getBack_row()->setBack_cube(tmpFrontFront);
-        //        side->getMid_row()->setBack_cube(tmpFrontMid);
     }
 }
 
-//void RubixCube::outputState()
-//{
+void RubixCube::outputState()
+{
 
-//    qDebug() << "++++++++++++++++++++" << endl
-//             << "\t" << sides[BACK]->getFront_row()->getFront_cube()->getId() << sides[BACK]->getMid_row()->getFront_cube()->getId() << sides[BACK]->getBack_row()->getFront_cube()->getId() << endl //BACK
-//             << "\t" << sides[BACK]->getFront_row()->getMid_cube()->getId() << sides[BACK]->getMid_row()->getMid_cube()->getId() << sides[BACK]->getBack_row()->getMid_cube()->getId() << endl
-//             << "\t" << sides[BACK]->getFront_row()->getBack_cube()->getId() << sides[BACK]->getMid_row()->getBack_cube()->getId() << sides[BACK]->getBack_row()->getBack_cube()->getId() << endl << endl
-//             << "\t" << sides[TOP]->getFront_row()->getFront_cube()->getId() << sides[TOP]->getMid_row()->getFront_cube()->getId() << sides[TOP]->getBack_row()->getFront_cube()->getId() << endl //BACK
-//             << "\t" << sides[TOP]->getFront_row()->getMid_cube()->getId() << sides[TOP]->getMid_row()->getMid_cube()->getId() << sides[TOP]->getBack_row()->getMid_cube()->getId() << endl
-//             << "\t" << sides[TOP]->getFront_row()->getBack_cube()->getId() << sides[TOP]->getMid_row()->getBack_cube()->getId() << sides[TOP]->getBack_row()->getBack_cube()->getId() << endl << endl
-//             << sides[LEFT]->getBack_row()->getFront_cube()->getId() << sides[LEFT]->getBack_row()->getMid_cube()->getId() << sides[LEFT]->getBack_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getBack_cube()->getId() << sides[FRONT]->getMid_row()->getBack_cube()->getId() << sides[FRONT]->getBack_row()->getBack_cube()->getId() << "\t" << sides[RIGHT]->getBack_row()->getBack_cube()->getId() << sides[RIGHT]->getBack_row()->getMid_cube()->getId() << sides[RIGHT]->getBack_row()->getFront_cube()->getId() << endl
-//             << sides[LEFT]->getMid_row()->getFront_cube()->getId() << sides[LEFT]->getMid_row()->getMid_cube()->getId() << sides[LEFT]->getMid_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getMid_cube()->getId() << sides[FRONT]->getMid_row()->getMid_cube()->getId() << sides[FRONT]->getBack_row()->getMid_cube()->getId() << "\t" << sides[RIGHT]->getMid_row()->getBack_cube()->getId() << sides[RIGHT]->getMid_row()->getMid_cube()->getId() << sides[RIGHT]->getMid_row()->getFront_cube()->getId() << endl
-//             << sides[LEFT]->getFront_row()->getFront_cube()->getId() << sides[LEFT]->getFront_row()->getMid_cube()->getId() << sides[LEFT]->getFront_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getFront_cube()->getId() << sides[FRONT]->getMid_row()->getFront_cube()->getId() << sides[FRONT]->getBack_row()->getFront_cube()->getId() << "\t" << sides[RIGHT]->getFront_row()->getBack_cube()->getId() << sides[RIGHT]->getFront_row()->getMid_cube()->getId() << sides[RIGHT]->getFront_row()->getFront_cube()->getId() << endl << endl
-//             << "\t" << sides[DOWN]->getFront_row()->getBack_cube()->getId() << sides[DOWN]->getMid_row()->getBack_cube()->getId() << sides[DOWN]->getBack_row()->getBack_cube()->getId() << endl
-//             << "\t" << sides[DOWN]->getFront_row()->getMid_cube()->getId() << sides[DOWN]->getMid_row()->getMid_cube()->getId() << sides[DOWN]->getBack_row()->getMid_cube()->getId() << endl
-//             << "\t" << sides[DOWN]->getFront_row()->getFront_cube()->getId() << sides[DOWN]->getMid_row()->getFront_cube()->getId() << sides[DOWN]->getBack_row()->getFront_cube()->getId() << endl;
-//}
+    qDebug() << "++++++++++++++++++++" << endl
+             << "\t" << sides[BACK]->getFront_row()->getFront_cube()->getId() << sides[BACK]->getMid_row()->getFront_cube()->getId() << sides[BACK]->getBack_row()->getFront_cube()->getId() << endl //BACK
+             << "\t" << sides[BACK]->getFront_row()->getMid_cube()->getId() << sides[BACK]->getMid_row()->getMid_cube()->getId() << sides[BACK]->getBack_row()->getMid_cube()->getId() << endl
+             << "\t" << sides[BACK]->getFront_row()->getBack_cube()->getId() << sides[BACK]->getMid_row()->getBack_cube()->getId() << sides[BACK]->getBack_row()->getBack_cube()->getId() << endl << endl
+             << "\t" << sides[TOP]->getFront_row()->getFront_cube()->getId() << sides[TOP]->getMid_row()->getFront_cube()->getId() << sides[TOP]->getBack_row()->getFront_cube()->getId() << endl //BACK
+             << "\t" << sides[TOP]->getFront_row()->getMid_cube()->getId() << sides[TOP]->getMid_row()->getMid_cube()->getId() << sides[TOP]->getBack_row()->getMid_cube()->getId() << endl
+             << "\t" << sides[TOP]->getFront_row()->getBack_cube()->getId() << sides[TOP]->getMid_row()->getBack_cube()->getId() << sides[TOP]->getBack_row()->getBack_cube()->getId() << endl << endl
+             << sides[LEFT]->getBack_row()->getFront_cube()->getId() << sides[LEFT]->getBack_row()->getMid_cube()->getId() << sides[LEFT]->getBack_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getBack_cube()->getId() << sides[FRONT]->getMid_row()->getBack_cube()->getId() << sides[FRONT]->getBack_row()->getBack_cube()->getId() << "\t" << sides[RIGHT]->getBack_row()->getBack_cube()->getId() << sides[RIGHT]->getBack_row()->getMid_cube()->getId() << sides[RIGHT]->getBack_row()->getFront_cube()->getId() << endl
+             << sides[LEFT]->getMid_row()->getFront_cube()->getId() << sides[LEFT]->getMid_row()->getMid_cube()->getId() << sides[LEFT]->getMid_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getMid_cube()->getId() << sides[FRONT]->getMid_row()->getMid_cube()->getId() << sides[FRONT]->getBack_row()->getMid_cube()->getId() << "\t" << sides[RIGHT]->getMid_row()->getBack_cube()->getId() << sides[RIGHT]->getMid_row()->getMid_cube()->getId() << sides[RIGHT]->getMid_row()->getFront_cube()->getId() << endl
+             << sides[LEFT]->getFront_row()->getFront_cube()->getId() << sides[LEFT]->getFront_row()->getMid_cube()->getId() << sides[LEFT]->getFront_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getFront_cube()->getId() << sides[FRONT]->getMid_row()->getFront_cube()->getId() << sides[FRONT]->getBack_row()->getFront_cube()->getId() << "\t" << sides[RIGHT]->getFront_row()->getBack_cube()->getId() << sides[RIGHT]->getFront_row()->getMid_cube()->getId() << sides[RIGHT]->getFront_row()->getFront_cube()->getId() << endl << endl
+             << "\t" << sides[DOWN]->getFront_row()->getBack_cube()->getId() << sides[DOWN]->getMid_row()->getBack_cube()->getId() << sides[DOWN]->getBack_row()->getBack_cube()->getId() << endl
+             << "\t" << sides[DOWN]->getFront_row()->getMid_cube()->getId() << sides[DOWN]->getMid_row()->getMid_cube()->getId() << sides[DOWN]->getBack_row()->getMid_cube()->getId() << endl
+             << "\t" << sides[DOWN]->getFront_row()->getFront_cube()->getId() << sides[DOWN]->getMid_row()->getFront_cube()->getId() << sides[DOWN]->getBack_row()->getFront_cube()->getId() << endl;
+}

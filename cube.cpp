@@ -121,24 +121,18 @@ QVector3D Cube::getPosition() const
 
 void Cube::rotateX(int angle)
 {
-    //    QMatrix4x4 rotMatrix;
-    //    rotMatrix.rotate(angle, currentXVec);
-    //    currentXVec = rotMatrix.map(QVector3D(1, 0, 0));
+
     rotation = QQuaternion::fromAxisAndAngle(QVector3D(1, 0, 0), angle) * rotation;
 }
 
 void Cube::rotateY(int angle)
 {
-    //    QMatrix4x4 rotMatrix;
-    //    rotMatrix.rotate(angle, currentYVec);
-    //    currentYVec = rotMatrix.map(QVector3D(0, 1, 0));
+
     rotation = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0), angle) * rotation;
 }
 
 void Cube::rotateZ(int angle)
 {
-    //    QMatrix4x4 rotMatrix;
-    //    rotMatrix.rotate(angle, currentZVec);
-    //    currentZVec = rotMatrix.map(QVector3D(0, 0, 1));
+
     rotation = QQuaternion::fromAxisAndAngle(QVector3D(0, 0, 1), angle) * rotation;
 }

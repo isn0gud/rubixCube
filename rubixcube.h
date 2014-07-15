@@ -3,6 +3,7 @@
 
 #include "cube.h"
 #include "side.h"
+#include <QObject>
 
 /**
  * @brief RubixCube::RubixCube
@@ -20,10 +21,12 @@
  *           |
  *          4
  */
-class RubixCube {
+class RubixCube : public QObject {
+    Q_OBJECT
 private:
     QVector<Cube*> cubes;
     QVector<Side*> sides;
+    const int rotationSpeed = 10;
 
 public:
     enum SIDENAMES {
@@ -39,6 +42,8 @@ public:
     void rotateY(int block, int degree);
     void rotateZ(int block, int degree);
     QVector<Cube*> getCubes() const;
+signals:
+    void updateGL();
 
 private:
     QVector<Side*> getSides(Cube* cube);
