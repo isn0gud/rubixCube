@@ -110,9 +110,9 @@ void GLWidget::paintGL()
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 
-//        GLint enumBuffer;
-//        glGetIntegerv(GL_READ_BUFFER, &enumBuffer);
-//        qDebug() << enumBuffer;
+        //        GLint enumBuffer;
+        //        glGetIntegerv(GL_READ_BUFFER, &enumBuffer);
+        //        qDebug() << enumBuffer;
 
         unsigned char data[4];
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -191,9 +191,11 @@ void GLWidget::wheelEvent(QWheelEvent* event)
     int delta = event->delta();
 
     if (event->orientation() == Qt::Vertical) {
-        if (delta < 0) {
+        //zoom out
+        if (delta < 0 && distance < 25) {
             distance *= 1.1;
-        } else if (delta > 0) {
+            //zoom in
+        } else if (delta > 0 && distance > 3) {
             distance *= 0.9;
         }
 
@@ -206,38 +208,34 @@ void GLWidget::wheelEvent(QWheelEvent* event)
 void GLWidget::keyPressEvent(QKeyEvent* event)
 {
     if (selectedCube != -1) {
-
-        if (event->key() == Qt::Key_R) {
-            rotateVertical();
+        if (event->key() == Qt::Key_3) {
+            rCube.rotateX(selectedCube, 90, true);
+            updateGL();
         }
-        if (event->key() == Qt::Key_G) {
-            rotateHorizontal();
+        if (event->key() == Qt::Key_2) {
+            rCube.rotateY(selectedCube, 90, true);
+            updateGL();
         }
-        if (event->key() == Qt::Key_B) {
-            rotateDepth();
+        if (event->key() == Qt::Key_1) {
+            rCube.rotateZ(selectedCube, 90, true);
+            updateGL();
+        }
+        if (event->key() == Qt::Key_6) {
+            rCube.rotateX(selectedCube, 90, false);
+            updateGL();
+        }
+        if (event->key() == Qt::Key_5) {
+            rCube.rotateY(selectedCube, 90, false);
+            updateGL();
+        }
+        if (event->key() == Qt::Key_4) {
+            rCube.rotateZ(selectedCube, 90, false);
+            updateGL();
         }
     } else {
         //        qDebug() << "No Cube selected!";
     }
     event->accept();
-}
-
-void GLWidget::rotateVertical()
-{
-    rCube.rotateX(selectedCube, 90);
-    updateGL();
-}
-
-void GLWidget::rotateHorizontal()
-{
-    rCube.rotateY(selectedCube, 90);
-    updateGL();
-}
-
-void GLWidget::rotateDepth()
-{
-    rCube.rotateZ(selectedCube, 90);
-    updateGL();
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)

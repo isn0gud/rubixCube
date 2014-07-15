@@ -38,9 +38,9 @@ public:
         RIGHT = 3
     };
     RubixCube();
-    void rotateX(int block, int degree);
-    void rotateY(int block, int degree);
-    void rotateZ(int block, int degree);
+    void rotateX(int block, int degree, bool rotPositiv);
+    void rotateY(int block, int degree, bool rotPositiv);
+    void rotateZ(int block, int degree, bool rotPositiv);
     QVector<Cube*> getCubes() const;
 signals:
     void updateGL();

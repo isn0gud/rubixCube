@@ -44,9 +44,9 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent* event);
 
 private:
-    void rotateVertical();
-    void rotateHorizontal();
-    void rotateDepth();
+//    void rotateVertical();
+//    void rotateHorizontal();
+//    void rotateDepth();
     void drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);
     void drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix);

@@ -69,10 +69,10 @@ RubixCube::RubixCube()
     for (int i = 0; i < 6; ++i) {
         sides.append(new Side(vSides[i]));
     }
-        outputState();
+    outputState();
 }
 
-void RubixCube::rotateX(int block, int degree)
+void RubixCube::rotateX(int block, int degree, bool rotPositiv)
 {
     QVector<Side*> _sides = getSides(cubes[block]);
     if (_sides.contains(sides[RubixCube::RIGHT])) {
@@ -80,49 +80,81 @@ void RubixCube::rotateX(int block, int degree)
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::RIGHT]->getCubes())
             {
-                cube->rotateX(rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateX(rotationSpeed);
+                } else {
+                    cube->rotateX(-rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::RIGHT);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::RIGHT);
+            rotateSide(RubixCube::RIGHT);
+        }
     } else if (_sides.contains(sides[RubixCube::LEFT])) {
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::LEFT]->getCubes())
             {
-                cube->rotateX(-rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateX(-rotationSpeed);
+                } else {
+                    cube->rotateX(rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::LEFT);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::LEFT);
+            rotateSide(RubixCube::LEFT);
+        }
     }
 }
 
-void RubixCube::rotateY(int block, int degree)
+void RubixCube::rotateY(int block, int degree, bool rotPositiv)
 {
     QVector<Side*> _sides = getSides(cubes[block]);
     if (_sides.contains(sides[RubixCube::TOP])) {
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::TOP]->getCubes())
             {
-                cube->rotateY(rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateY(rotationSpeed);
+                } else {
+                    cube->rotateY(-rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::TOP);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::TOP);
+            rotateSide(RubixCube::TOP);
+        }
 
     } else if (_sides.contains(sides[RubixCube::DOWN])) {
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::DOWN]->getCubes())
             {
-                cube->rotateY(-rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateY(-rotationSpeed);
+                } else {
+                    cube->rotateY(rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::DOWN);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::DOWN);
+            rotateSide(RubixCube::DOWN);
+        }
     }
 }
 
-void RubixCube::rotateZ(int block, int degree)
+void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
 {
     QVector<Side*> _sides = getSides(cubes[block]);
 
@@ -130,22 +162,38 @@ void RubixCube::rotateZ(int block, int degree)
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::FRONT]->getCubes())
             {
-                cube->rotateZ(rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateZ(rotationSpeed);
+                } else {
+                    cube->rotateZ(-rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::FRONT);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::FRONT);
+            rotateSide(RubixCube::FRONT);
+        }
 
     } else if (_sides.contains(sides[RubixCube::BACK])) {
 
         for (int i = 1; i <= degree; i = i + rotationSpeed) {
             foreach(Cube * cube, sides[RubixCube::BACK]->getCubes())
             {
-                cube->rotateZ(-rotationSpeed);
+                if (rotPositiv) {
+                    cube->rotateZ(-rotationSpeed);
+                } else {
+                    cube->rotateZ(rotationSpeed);
+                }
             }
             emit updateGL();
         }
         rotateSide(RubixCube::BACK);
+        if (!rotPositiv) {
+            rotateSide(RubixCube::BACK);
+            rotateSide(RubixCube::BACK);
+        }
     }
 }
 
