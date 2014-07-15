@@ -3,7 +3,7 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include "cube.h"
-//#include <QDebug>
+
 
 GLWidget::GLWidget(QWidget* parent)
     : QGLWidget(QGLFormat(), parent)
@@ -25,13 +25,13 @@ QSize GLWidget::sizeHint() const
 void GLWidget::correctCube()
 {
     qglClearColor(solved);
-    qDebug() << "correctCube";
+//    qDebug() << "correctCube";
 }
 
 void GLWidget::incorrectCube()
 {
     qglClearColor(unsolved);
-    qDebug() << "incorrectCube";
+//    qDebug() << "incorrectCube";
 }
 
 void GLWidget::initializeGL()
@@ -132,7 +132,7 @@ void GLWidget::paintGL()
         unsigned char data[4];
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-        qDebug() << data[0] << data[1] << data[2] << endl;
+//        qDebug() << data[0] << data[1] << data[2] << endl;
         if ((data[0] == data[1]) && (data[1] == data[2]) && data[0] >= 0 && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 rCube.getCubes().at(selectedCube)->setToStdColor();
@@ -262,21 +262,21 @@ void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
     event->accept();
 }
 
-void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
-{
-    Cube cube = Cube(1, 0, 0, 0);
-    mMatrix.setToIdentity();
-    mMatrix.scale(10, 0.02, 0.02);
-    cube.setToColor(Qt::red);
-    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
+//void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
+//{
+//    Cube cube = Cube(1, 0, 0, 0);
+//    mMatrix.setToIdentity();
+//    mMatrix.scale(10, 0.02, 0.02);
+//    cube.setToColor(Qt::red);
+//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
-    mMatrix.setToIdentity();
-    mMatrix.scale(0.02, 10, 0.02);
-    cube.setToColor(Qt::green);
-    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
+//    mMatrix.setToIdentity();
+//    mMatrix.scale(0.02, 10, 0.02);
+//    cube.setToColor(Qt::green);
+//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
 
-    mMatrix.setToIdentity();
-    mMatrix.scale(0.02, 0.02, 10);
-    cube.setToColor(Qt::blue);
-    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
-}
+//    mMatrix.setToIdentity();
+//    mMatrix.scale(0.02, 0.02, 10);
+//    cube.setToColor(Qt::blue);
+//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
+//}

@@ -1,5 +1,5 @@
 #include "rubixcube.h"
-#include <QDebug>
+//#include <QDebug>
 
 /**
  * @brief RubixCube::RubixCube
@@ -53,7 +53,7 @@ RubixCube::RubixCube()
         initialSideIds << sides[i]->sideAsIds();
     }
 
-    outputState();
+//    outputState();
 }
 QVector<Cube*> RubixCube::getCubes() const
 {
@@ -336,7 +336,7 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 
         break;
     }
-    outputState();
+//    outputState();
 
     if (equalSides(sides)) {
         emit correctCube();
@@ -376,20 +376,20 @@ void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)
     }
 }
 
-void RubixCube::outputState()
-{
+//void RubixCube::outputState()
+//{
 
-    qDebug() << "++++++++++++++++++++" << endl
-             << "\t" << sides[BACK]->getFront_row()->getFront_cube()->getId() << sides[BACK]->getMid_row()->getFront_cube()->getId() << sides[BACK]->getBack_row()->getFront_cube()->getId() << endl //BACK
-             << "\t" << sides[BACK]->getFront_row()->getMid_cube()->getId() << sides[BACK]->getMid_row()->getMid_cube()->getId() << sides[BACK]->getBack_row()->getMid_cube()->getId() << endl
-             << "\t" << sides[BACK]->getFront_row()->getBack_cube()->getId() << sides[BACK]->getMid_row()->getBack_cube()->getId() << sides[BACK]->getBack_row()->getBack_cube()->getId() << endl << endl
-             << "\t" << sides[TOP]->getFront_row()->getFront_cube()->getId() << sides[TOP]->getMid_row()->getFront_cube()->getId() << sides[TOP]->getBack_row()->getFront_cube()->getId() << endl //BACK
-             << "\t" << sides[TOP]->getFront_row()->getMid_cube()->getId() << sides[TOP]->getMid_row()->getMid_cube()->getId() << sides[TOP]->getBack_row()->getMid_cube()->getId() << endl
-             << "\t" << sides[TOP]->getFront_row()->getBack_cube()->getId() << sides[TOP]->getMid_row()->getBack_cube()->getId() << sides[TOP]->getBack_row()->getBack_cube()->getId() << endl << endl
-             << sides[LEFT]->getBack_row()->getFront_cube()->getId() << sides[LEFT]->getBack_row()->getMid_cube()->getId() << sides[LEFT]->getBack_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getBack_cube()->getId() << sides[FRONT]->getMid_row()->getBack_cube()->getId() << sides[FRONT]->getBack_row()->getBack_cube()->getId() << "\t" << sides[RIGHT]->getBack_row()->getBack_cube()->getId() << sides[RIGHT]->getBack_row()->getMid_cube()->getId() << sides[RIGHT]->getBack_row()->getFront_cube()->getId() << endl
-             << sides[LEFT]->getMid_row()->getFront_cube()->getId() << sides[LEFT]->getMid_row()->getMid_cube()->getId() << sides[LEFT]->getMid_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getMid_cube()->getId() << sides[FRONT]->getMid_row()->getMid_cube()->getId() << sides[FRONT]->getBack_row()->getMid_cube()->getId() << "\t" << sides[RIGHT]->getMid_row()->getBack_cube()->getId() << sides[RIGHT]->getMid_row()->getMid_cube()->getId() << sides[RIGHT]->getMid_row()->getFront_cube()->getId() << endl
-             << sides[LEFT]->getFront_row()->getFront_cube()->getId() << sides[LEFT]->getFront_row()->getMid_cube()->getId() << sides[LEFT]->getFront_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getFront_cube()->getId() << sides[FRONT]->getMid_row()->getFront_cube()->getId() << sides[FRONT]->getBack_row()->getFront_cube()->getId() << "\t" << sides[RIGHT]->getFront_row()->getBack_cube()->getId() << sides[RIGHT]->getFront_row()->getMid_cube()->getId() << sides[RIGHT]->getFront_row()->getFront_cube()->getId() << endl << endl
-             << "\t" << sides[DOWN]->getFront_row()->getBack_cube()->getId() << sides[DOWN]->getMid_row()->getBack_cube()->getId() << sides[DOWN]->getBack_row()->getBack_cube()->getId() << endl
-             << "\t" << sides[DOWN]->getFront_row()->getMid_cube()->getId() << sides[DOWN]->getMid_row()->getMid_cube()->getId() << sides[DOWN]->getBack_row()->getMid_cube()->getId() << endl
-             << "\t" << sides[DOWN]->getFront_row()->getFront_cube()->getId() << sides[DOWN]->getMid_row()->getFront_cube()->getId() << sides[DOWN]->getBack_row()->getFront_cube()->getId() << endl;
-}
+//    qDebug() << "++++++++++++++++++++" << endl
+//             << "\t" << sides[BACK]->getFront_row()->getFront_cube()->getId() << sides[BACK]->getMid_row()->getFront_cube()->getId() << sides[BACK]->getBack_row()->getFront_cube()->getId() << endl //BACK
+//             << "\t" << sides[BACK]->getFront_row()->getMid_cube()->getId() << sides[BACK]->getMid_row()->getMid_cube()->getId() << sides[BACK]->getBack_row()->getMid_cube()->getId() << endl
+//             << "\t" << sides[BACK]->getFront_row()->getBack_cube()->getId() << sides[BACK]->getMid_row()->getBack_cube()->getId() << sides[BACK]->getBack_row()->getBack_cube()->getId() << endl << endl
+//             << "\t" << sides[TOP]->getFront_row()->getFront_cube()->getId() << sides[TOP]->getMid_row()->getFront_cube()->getId() << sides[TOP]->getBack_row()->getFront_cube()->getId() << endl //BACK
+//             << "\t" << sides[TOP]->getFront_row()->getMid_cube()->getId() << sides[TOP]->getMid_row()->getMid_cube()->getId() << sides[TOP]->getBack_row()->getMid_cube()->getId() << endl
+//             << "\t" << sides[TOP]->getFront_row()->getBack_cube()->getId() << sides[TOP]->getMid_row()->getBack_cube()->getId() << sides[TOP]->getBack_row()->getBack_cube()->getId() << endl << endl
+//             << sides[LEFT]->getBack_row()->getFront_cube()->getId() << sides[LEFT]->getBack_row()->getMid_cube()->getId() << sides[LEFT]->getBack_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getBack_cube()->getId() << sides[FRONT]->getMid_row()->getBack_cube()->getId() << sides[FRONT]->getBack_row()->getBack_cube()->getId() << "\t" << sides[RIGHT]->getBack_row()->getBack_cube()->getId() << sides[RIGHT]->getBack_row()->getMid_cube()->getId() << sides[RIGHT]->getBack_row()->getFront_cube()->getId() << endl
+//             << sides[LEFT]->getMid_row()->getFront_cube()->getId() << sides[LEFT]->getMid_row()->getMid_cube()->getId() << sides[LEFT]->getMid_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getMid_cube()->getId() << sides[FRONT]->getMid_row()->getMid_cube()->getId() << sides[FRONT]->getBack_row()->getMid_cube()->getId() << "\t" << sides[RIGHT]->getMid_row()->getBack_cube()->getId() << sides[RIGHT]->getMid_row()->getMid_cube()->getId() << sides[RIGHT]->getMid_row()->getFront_cube()->getId() << endl
+//             << sides[LEFT]->getFront_row()->getFront_cube()->getId() << sides[LEFT]->getFront_row()->getMid_cube()->getId() << sides[LEFT]->getFront_row()->getBack_cube()->getId() << /*LEFT*/ "\t" << sides[FRONT]->getFront_row()->getFront_cube()->getId() << sides[FRONT]->getMid_row()->getFront_cube()->getId() << sides[FRONT]->getBack_row()->getFront_cube()->getId() << "\t" << sides[RIGHT]->getFront_row()->getBack_cube()->getId() << sides[RIGHT]->getFront_row()->getMid_cube()->getId() << sides[RIGHT]->getFront_row()->getFront_cube()->getId() << endl << endl
+//             << "\t" << sides[DOWN]->getFront_row()->getBack_cube()->getId() << sides[DOWN]->getMid_row()->getBack_cube()->getId() << sides[DOWN]->getBack_row()->getBack_cube()->getId() << endl
+//             << "\t" << sides[DOWN]->getFront_row()->getMid_cube()->getId() << sides[DOWN]->getMid_row()->getMid_cube()->getId() << sides[DOWN]->getBack_row()->getMid_cube()->getId() << endl
+//             << "\t" << sides[DOWN]->getFront_row()->getFront_cube()->getId() << sides[DOWN]->getMid_row()->getFront_cube()->getId() << sides[DOWN]->getBack_row()->getFront_cube()->getId() << endl;
+//}

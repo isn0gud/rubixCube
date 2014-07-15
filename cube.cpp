@@ -47,14 +47,14 @@ QQuaternion Cube::getRotation() const
     return rotation;
 }
 
-void Cube::setToColor(QColor color)
-{
-    colors.clear();
-    for (int i = 0; i < 36; ++i) {
+//void Cube::setToColor(QColor color)
+//{
+//    colors.clear();
+//    for (int i = 0; i < 36; ++i) {
 
-        colors << QVector3D(color.red() / 255.0f, color.green() / 255.0f, color.blue() / 255.0f);
-    }
-}
+//        colors << QVector3D(color.red() / 255.0f, color.green() / 255.0f, color.blue() / 255.0f);
+//    }
+//}
 
 int Cube::getId() const
 {
