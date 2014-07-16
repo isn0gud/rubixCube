@@ -30,5 +30,5 @@
 
 #Qt
 *.user
-*.user*
+*.user.*
 *.autosave

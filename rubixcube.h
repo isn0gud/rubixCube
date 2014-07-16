@@ -28,6 +28,7 @@ private:
     QVector<Side*> sides;
     QVector<int> initialSideIds;
     const int rotationSpeed = 10;
+    const int sleepTime = 10;
 
 public:
     enum SIDENAMES {

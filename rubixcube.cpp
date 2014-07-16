@@ -108,7 +108,7 @@ void RubixCube::rotateX(int block, int degree, bool rotPositiv)
                     cube->rotateX(-rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::RIGHT);
@@ -126,7 +126,7 @@ void RubixCube::rotateX(int block, int degree, bool rotPositiv)
                     cube->rotateX(rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::LEFT);
@@ -150,7 +150,7 @@ void RubixCube::rotateY(int block, int degree, bool rotPositiv)
                     cube->rotateY(-rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::TOP);
@@ -169,7 +169,7 @@ void RubixCube::rotateY(int block, int degree, bool rotPositiv)
                     cube->rotateY(rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::DOWN);
@@ -194,7 +194,7 @@ void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
                     cube->rotateZ(-rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::FRONT);
@@ -214,7 +214,7 @@ void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
                     cube->rotateZ(rotationSpeed);
                 }
             }
-            Sleep(10);
+            Sleep(sleepTime);
             emit updateGL();
         }
         rotateSide(RubixCube::BACK);
