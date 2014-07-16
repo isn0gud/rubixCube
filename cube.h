@@ -27,7 +27,6 @@ public:
     void rotateZ(int angle);
     int getId() const;
     QQuaternion getRotation() const;
-//    void setToColor(QColor color);
 
 private:
 };

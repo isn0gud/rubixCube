@@ -4,7 +4,6 @@
 #include <QKeyEvent>
 #include "cube.h"
 
-
 GLWidget::GLWidget(QWidget* parent)
     : QGLWidget(QGLFormat(), parent)
 {
@@ -25,13 +24,11 @@ QSize GLWidget::sizeHint() const
 void GLWidget::correctCube()
 {
     qglClearColor(solved);
-//    qDebug() << "correctCube";
 }
 
 void GLWidget::incorrectCube()
 {
     qglClearColor(unsolved);
-//    qDebug() << "incorrectCube";
 }
 
 void GLWidget::initializeGL()
@@ -42,24 +39,24 @@ void GLWidget::initializeGL()
     connect(&rCube, &RubixCube::incorrectCube, this, &GLWidget::incorrectCube);
 
     glEnable(GL_DEPTH_TEST);
-    //only render polygons that show thier front side
     glEnable(GL_CULL_FACE);
 
     //set background color
     qglClearColor(solved);
 
+    //add shaders
     shaderProgram.addShaderFromSourceFile(QGLShader::Vertex, ":/shader/vertexShader.vsh");
     shaderProgram.addShaderFromSourceFile(QGLShader::Fragment, ":/shader/fragmentShader.fsh");
     shaderProgram.link();
 }
+
 void GLWidget::drawSingleCube(Cube& cube, QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
 {
     shaderProgram.setUniformValue("mvpMatrix", pMatrix * vMatrix * mMatrix);
     shaderProgram.setAttributeArray("vertex", cube.getVertices().constData());
     shaderProgram.enableAttributeArray("vertex");
-
+    //if in picking mode draw with color by id
     if (pick) {
-
         shaderProgram.setAttributeArray("color", cube.getColorVectorById().constData());
     } else {
         shaderProgram.setAttributeArray("color", cube.getColors().constData());
@@ -74,18 +71,10 @@ void GLWidget::drawCube(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatr
 {
     foreach(Cube * cube, rCube.getCubes())
     {
-        //        if (cube->getId() == 26) {
-        //            QMatrix4x4 oldMMatrix = mMatrix;
         mMatrix.setToIdentity();
-        //            mMatrix.rotate(cube->getYAngle(), QVector3D(0, 1, 0));
-        //            mMatrix.rotate(cube->getZAngle(), QVector3D(0, 0, 1));
-        //            mMatrix.rotate(cube->getXAngle(), QVector3D(1, 0, 0));
-        //            QQuaternion rotation = QQuaternion::fromAxisAndAngle(1, 0, 0, cube->getXAngle()) * QQuaternion::fromAxisAndAngle(0, 1, 0, cube->getYAngle()) * QQuaternion::fromAxisAndAngle(0, 0, 1, cube->getZAngle());
         mMatrix.rotate(cube->getRotation());
         mMatrix.translate(cube->getPosition());
         drawSingleCube(*cube, mMatrix, vMatrix, pMatrix);
-        //        }
-        //drawCoords(mMatrix,vMatrix,pMatrix);
     }
 }
 
@@ -105,35 +94,23 @@ void GLWidget::paintGL()
 
     vMatrix.lookAt(cameraPosition, QVector3D(0, 0, 0), cameraUpDirection);
     shaderProgram.bind();
-    // shaderProgram.setUniformValue("color", QColor(Qt::blue));
 
+    //draws rubiks cube
     drawCube(mMatrix, vMatrix, pMatrix);
 
-    //    drawCoords(mMatrix, vMatrix, pMatrix);
-    //draw big black cube
-    //    Cube cube = Cube(1, 0, 0, 0);
-    //    mMatrix.setToIdentity();
-    //    mMatrix.scale(3.07, 3.07, 3.07);
-    //    cube.setToColor(Qt::black);
-    //    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
-
     if (pick) {
+        //finish all pending gl commands
         glFlush();
-        glFinish();
 
-        //        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GLint viewport[4];
         glGetIntegerv(GL_VIEWPORT, viewport);
 
-        //        GLint enumBuffer;
-        //        glGetIntegerv(GL_READ_BUFFER, &enumBuffer);
-        //        qDebug() << enumBuffer;
-
         unsigned char data[4];
+        //reads rendered pixel at clicked coord
         glReadPixels(lastMousePosition.x(), viewport[3] - lastMousePosition.y(), 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-//        qDebug() << data[0] << data[1] << data[2] << endl;
-        if ((data[0] == data[1]) && (data[1] == data[2]) && data[0] >= 0 && data[0] <= 27) {
+        //set selected cube based on read pixel
+        if ((data[0] == data[1]) && (data[1] == data[2]) && data[0] <= 27) {
             if (selectedCube == data[0]) {
                 rCube.getCubes().at(selectedCube)->setToStdColor();
                 selectedCube = -1;
@@ -151,13 +128,10 @@ void GLWidget::paintGL()
 
 void GLWidget::resizeGL(int width, int height)
 {
-    //check if height != 0 so no division by zero is possible
     if (height == 0) {
         height = 1;
     }
-    // set the matrix to a Identitiy Matrix so it doenst change the vector when applied as transforamtion
     pMatrix.setToIdentity();
-    //set the perpective; params:Field of View(Degree), aspectRatio(ger: seitenverhältnis), clipping Plane near, Plane far
     pMatrix.perspective(60.0, (float)width / (float)height, 0.001, 1000);
 
     glViewport(0, 0, width, height);
@@ -165,9 +139,7 @@ void GLWidget::resizeGL(int width, int height)
 
 void GLWidget::mousePressEvent(QMouseEvent* event)
 {
-
     lastMousePosition = event->pos();
-
     event->accept();
 }
 
@@ -192,19 +164,15 @@ void GLWidget::mouseMoveEvent(QMouseEvent* event)
         if (beta > 90) {
             beta = 90;
         }
-
         updateGL();
     }
-
     lastMousePosition = event->pos();
-
     event->accept();
 }
 
 void GLWidget::wheelEvent(QWheelEvent* event)
 {
     int delta = event->delta();
-
     if (event->orientation() == Qt::Vertical) {
         //zoom out
         if (delta < 0 && distance < 25) {
@@ -213,10 +181,8 @@ void GLWidget::wheelEvent(QWheelEvent* event)
         } else if (delta > 0 && distance > 3) {
             distance *= 0.9;
         }
-
         updateGL();
     }
-
     event->accept();
 }
 
@@ -248,7 +214,6 @@ void GLWidget::keyPressEvent(QKeyEvent* event)
             updateGL();
         }
     } else {
-        //        qDebug() << "No Cube selected!";
     }
     event->accept();
 }
@@ -261,22 +226,3 @@ void GLWidget::mouseDoubleClickEvent(QMouseEvent* event)
     updateGL();
     event->accept();
 }
-
-//void GLWidget::drawCoords(QMatrix4x4 mMatrix, QMatrix4x4 vMatrix, QMatrix4x4 pMatrix)
-//{
-//    Cube cube = Cube(1, 0, 0, 0);
-//    mMatrix.setToIdentity();
-//    mMatrix.scale(10, 0.02, 0.02);
-//    cube.setToColor(Qt::red);
-//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
-
-//    mMatrix.setToIdentity();
-//    mMatrix.scale(0.02, 10, 0.02);
-//    cube.setToColor(Qt::green);
-//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
-
-//    mMatrix.setToIdentity();
-//    mMatrix.scale(0.02, 0.02, 10);
-//    cube.setToColor(Qt::blue);
-//    drawSingleCube(cube, mMatrix, vMatrix, pMatrix);
-//}

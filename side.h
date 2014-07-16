@@ -3,8 +3,7 @@
 #include "row.h"
 
 class Side {
-    //TODO PRIVATE
-public:
+private:
     Row* front_row;
     Row* mid_row;
     Row* back_row;
