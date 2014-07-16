@@ -1,4 +1,5 @@
 #include "rubixcube.h"
+#include "windows.h"
 //#include <QDebug>
 
 /**
@@ -53,7 +54,7 @@ RubixCube::RubixCube()
         initialSideIds << sides[i]->sideAsIds();
     }
 
-//    outputState();
+    //    outputState();
 }
 QVector<Cube*> RubixCube::getCubes() const
 {
@@ -107,6 +108,7 @@ void RubixCube::rotateX(int block, int degree, bool rotPositiv)
                     cube->rotateX(-rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::RIGHT);
@@ -124,6 +126,7 @@ void RubixCube::rotateX(int block, int degree, bool rotPositiv)
                     cube->rotateX(rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::LEFT);
@@ -147,6 +150,7 @@ void RubixCube::rotateY(int block, int degree, bool rotPositiv)
                     cube->rotateY(-rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::TOP);
@@ -165,6 +169,7 @@ void RubixCube::rotateY(int block, int degree, bool rotPositiv)
                     cube->rotateY(rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::DOWN);
@@ -189,6 +194,7 @@ void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
                     cube->rotateZ(-rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::FRONT);
@@ -208,6 +214,7 @@ void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
                     cube->rotateZ(rotationSpeed);
                 }
             }
+            Sleep(10);
             emit updateGL();
         }
         rotateSide(RubixCube::BACK);
@@ -336,7 +343,7 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 
         break;
     }
-//    outputState();
+    //    outputState();
 
     if (equalSides(sides)) {
         emit correctCube();
