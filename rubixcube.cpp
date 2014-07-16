@@ -2,7 +2,7 @@
 #include "windows.h"
 
 /**
- * @brief RubixCube::RubixCube
+ * Values of the sides
  *
  *              5
  *              |
@@ -17,6 +17,7 @@
  *           |
  *          4
  */
+
 RubixCube::RubixCube()
 {
     int id = 0;
@@ -26,6 +27,7 @@ RubixCube::RubixCube()
             for (int z = -1; z < 2; ++z) {
                 cubes << new Cube(id, x, y, z);
                 id++;
+                //assign cubes to sides
                 if (x == -1) {
                     Cube* cube = cubes.back();
                     vSides[RubixCube::LEFT].append(cube);
@@ -53,18 +55,19 @@ RubixCube::RubixCube()
         initialSideIds << sides[i]->sideAsIds();
     }
 }
+
 QVector<Cube*> RubixCube::getCubes() const
 {
     return cubes;
 }
+
 QVector<Side*> RubixCube::getSides() const
 {
     return sides;
 }
-
+//tests if the current side status is equal to the inital sides
 bool RubixCube::equalSides(QVector<Side*> _sides) const
 {
-
     QVector<int> currentSideIds;
     foreach(Side * side, _sides)
     {
@@ -91,6 +94,7 @@ QVector<Side*> RubixCube::getSides(Cube* cube)
     return _sides;
 }
 
+//rotates the LEFT and RIGHT side around the x axis
 void RubixCube::rotateX(int block, int degree, bool rotPositiv)
 {
     QVector<Side*> _sides = getSides(cubes[block]);
@@ -221,7 +225,7 @@ void RubixCube::rotateZ(int block, int degree, bool rotPositiv)
         }
     }
 }
-
+//set cube pinters in adjacent sides after rotation of the singe side
 void RubixCube::rotateSide(RubixCube::SIDENAMES side)
 {
     rotateSingleSide(side);
@@ -335,7 +339,7 @@ void RubixCube::rotateSide(RubixCube::SIDENAMES side)
         emit incorrectCube();
     }
 }
-
+//rotated cube pointers in a singe side
 void RubixCube::rotateSingleSide(RubixCube::SIDENAMES sidename)
 {
     Side* side = sides[sidename];
